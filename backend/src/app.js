@@ -9,7 +9,9 @@ const logger = require('./logger');
 const { catchAll, notFound } = require('./error');
 
 const app = express();
-// const userRouter = require('./app/api/user/user.router')
+
+const userRouter = require('./app/api/user/user.router');
+const authRouter = require('./app/api/auth/auth.router');
 
 const options = {
   info: {
@@ -47,7 +49,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/ping', (_, res) => {
   res.json({ message: 'It works!' });
 });
-// app.use('/api/users', userRouter)
+
+app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 
 app.use(notFound);
 app.use(catchAll);
