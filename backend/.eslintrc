@@ -7,6 +7,7 @@
     "ecmaVersion": 8
   },
   "rules": {
-    "no-process-env": "error"
+    "no-process-env": "error",
+    "no-underscore-dangle": "off"
   }
 }
