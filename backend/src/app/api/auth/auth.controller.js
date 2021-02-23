@@ -31,7 +31,7 @@ module.exports.login = async (request, response) => {
 
   const result = await bcrypt.compare(password, user.hash);
   if (result) {
-    const token = generateToken(email);
+    const token = generateToken(user._id.toString());
     response.json({ jwt: token, _id: user._id });
   } else {
     response.status(400);
@@ -46,8 +46,7 @@ module.exports.login = async (request, response) => {
  * @return {boolean} 200 - true if the users is logged in, false otherwise
  */
 module.exports.loggedIn = async (request, response) => {
-  const email = request.principal;
-  const user = await User.findOne({ email });
+  const user = await User.findById(request.principal);
   response.send(!!user);
 };
 

@@ -1,5 +1,6 @@
 const { JWT_SECRET } = require('../../config');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 module.exports.authenticateToken = (request, response, next) => {
   // Gather the jwt access token from the request header
@@ -11,14 +12,14 @@ module.exports.authenticateToken = (request, response, next) => {
     return;
   }
 
-  jwt.verify(token, JWT_SECRET, (error, email) => {
-    if (error) {
+  jwt.verify(token, JWT_SECRET, (error, id) => {
+    if (error || !mongoose.Types.ObjectId.isValid(id)) {
       response.sendStatus(403);
       return;
     }
-    request.principal = email;
+    request.principal = id;
     next();
   });
 };
 
-module.exports.generateToken = (email) => jwt.sign(email, JWT_SECRET);
+module.exports.generateToken = (id) => jwt.sign(id, JWT_SECRET);

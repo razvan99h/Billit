@@ -6,16 +6,19 @@ const {
   validateUserOwnership
 } = require('../../middleware/ownership.middleware');
 
-const { userExists, remove, list, update, view } = require('./user.controller');
+const { userExists, view, update, remove } = require('./user.controller');
 
 const router = express.Router();
 router.use(authenticateToken);
 
-router.route('/').get(list);
-
 router
   .route('/:id')
-  .get(catchErrors(validateId), catchErrors(userExists), catchErrors(view))
+  .get(
+    catchErrors(validateId),
+    catchErrors(userExists),
+    catchErrors(validateUserOwnership),
+    catchErrors(view)
+  )
   .put(
     catchErrors(validateId),
     catchErrors(userExists),

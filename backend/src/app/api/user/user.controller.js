@@ -1,5 +1,5 @@
 const User = require('./user.model');
-
+const Bill = require('./../bill/bill.model');
 /**
  * User entity
  * @typedef {object} User
@@ -19,23 +19,12 @@ module.exports.userExists = async (request, response, next) => {
 };
 
 /**
- * GET /api/users
- * @summary Get all users
- * @security BearerAuth
- * @return {array<User>} 200 - the list of User entities
- */
-module.exports.list = async (request, response) => {
-  const users = await User.find();
-  response.json(users);
-};
-
-/**
  * GET /api/users/:id
  * @summary Get user identified by id
  * @security BearerAuth
  * @param {string} request.params.id - User id
  * @return {User} 200 - User entity
- * @return {object} 404 - User does not exist
+ * @return {object} 404 - User not found
  */
 module.exports.view = async (request, response) => {
   const user = await User.findById(request.params.id);
@@ -50,7 +39,7 @@ module.exports.view = async (request, response) => {
  * @param {User} request.body User to update
  * @return {User} 200 - Updated user entity
  * @return {object} 403 - Resource not owned
- * @return {object} 404 - User does not exist
+ * @return {object} 404 - User not found
  */
 module.exports.update = async (request, response) => {
   const user = await User.findByIdAndUpdate(request.params.id, request.body, {
@@ -66,9 +55,10 @@ module.exports.update = async (request, response) => {
  * @param {string} request.params.id - User id
  * @return {string} 200 - Deleted user id
  * @return {object} 403 - Resource not owned
- * @return {object} 404 - User does not exist
+ * @return {object} 404 - User not found
  */
 module.exports.remove = async (request, response) => {
+  await Bill.deleteMany({ owner: request.params.id });
   await User.findByIdAndRemove(request.params.id);
   response.json(request.params.id);
 };

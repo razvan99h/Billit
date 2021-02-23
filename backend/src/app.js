@@ -12,6 +12,7 @@ const app = express();
 
 const userRouter = require('./app/api/user/user.router');
 const authRouter = require('./app/api/auth/auth.router');
+const billRouter = require('./app/api/bill/bill.router');
 
 const options = {
   info: {
@@ -52,6 +53,7 @@ app.get('/ping', (_, res) => {
 
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/bills', billRouter);
 
 app.use(notFound);
 app.use(catchAll);
