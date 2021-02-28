@@ -8,7 +8,13 @@ const BillSchema = new mongoose.Schema(
     },
     store: String,
     number: String,
-    date: Date
+    date: Date,
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+      }
+    ]
   },
   {
     timestamps: true

@@ -7,6 +7,16 @@ const User = require('./../user/user.model');
  * @property {string} store.required
  * @property {string} number.required
  * @property {Date} date.required
+ * @property {array<Product>} products
+ */
+
+/**
+ * Product entity
+ * @typedef {object} Product
+ * @property {string} bill
+ * @property {string} name.required
+ * @property {number} price.required
+ * @property {number} quantity.required
  */
 
 module.exports.billExists = async (request, response, next) => {
@@ -55,9 +65,10 @@ module.exports.view = async (request, response) => {
  * @return {object} 401 - Unauthorized
  */
 module.exports.add = async (request, response) => {
+  // TODO: handle add logic - for adding products as well
   const owner = await User.findById(request.principal);
   const { store, number, date } = request.body;
-  const bill = await Bill.create({ owner, store, number, date });
+  const bill = await Bill.create({ owner, store, number, date, products: [] });
   response.json(bill);
 };
 
@@ -72,6 +83,7 @@ module.exports.add = async (request, response) => {
  * @return {object} 404 - Bill does not exist
  */
 module.exports.update = async (request, response) => {
+  // TODO: handle update logic - for updating products as well
   const bill = await Bill.findByIdAndUpdate(request.params.id, request.body, {
     new: true
   }).exec();
