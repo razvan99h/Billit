@@ -1,5 +1,8 @@
 {
-  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "extends": [
+    "airbnb-base",
+    "plugin:prettier/recommended"
+  ],
   "env": {
     "es6": true
   },
@@ -8,6 +11,7 @@
   },
   "rules": {
     "no-process-env": "error",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "newline-per-chained-call": "off"
   }
 }

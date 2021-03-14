@@ -8,11 +8,11 @@ const cors = require('@robertoachar/express-cors');
 const logger = require('./logger');
 const { catchAll, notFound } = require('./error');
 
-const app = express();
-
 const userRouter = require('./app/api/user/user.router');
 const authRouter = require('./app/api/auth/auth.router');
 const billRouter = require('./app/api/bill/bill.router');
+
+const app = express();
 
 const options = {
   info: {

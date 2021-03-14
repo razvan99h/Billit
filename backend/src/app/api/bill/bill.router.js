@@ -3,45 +3,45 @@ const catchErrors = require('express-catch-errors');
 const { validateId } = require('../../middleware/id.middleware');
 const { authenticateToken } = require('../../middleware/jwt.middleware');
 const {
-  validateUserExistence
-} = require('../../middleware/existence.middleware');
-
-const {
   validateBillOwnership
 } = require('../../middleware/ownership.middleware');
-
 const {
   billExists,
-  listOwned,
-  view,
-  add,
-  update,
-  remove
+  validateBillFields,
+  listOwnedBills,
+  billDetails,
+  addBill,
+  updateBill,
+  removeBill
 } = require('./bill.controller');
 
 const router = express.Router();
 router.use(authenticateToken);
 
-router.route('/').post(catchErrors(validateUserExistence), catchErrors(add));
+router.route('/').post(catchErrors(validateBillFields), catchErrors(addBill));
 
-router
-  .route('/owned')
-  .get(catchErrors(validateUserExistence), catchErrors(listOwned));
+router.route('/owned').get(catchErrors(listOwnedBills));
 
 router
   .route('/:id')
-  .get(catchErrors(validateId), catchErrors(billExists), catchErrors(view))
+  .get(
+    catchErrors(validateId),
+    catchErrors(billExists),
+    catchErrors(validateBillOwnership),
+    catchErrors(billDetails)
+  )
   .put(
     catchErrors(validateId),
     catchErrors(billExists),
     catchErrors(validateBillOwnership),
-    catchErrors(update)
+    catchErrors(validateBillFields),
+    catchErrors(updateBill)
   )
   .delete(
     catchErrors(validateId),
     catchErrors(billExists),
     catchErrors(validateBillOwnership),
-    catchErrors(remove)
+    catchErrors(removeBill)
   );
 
 module.exports = router;

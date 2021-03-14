@@ -55,22 +55,40 @@ module.exports.loggedIn = async (request, response) => {
  * @summary Register user with email, password and some details
  * @param {object} request.body Email, un-hashed password, name, city and country of a user
  * @return {object} 201 - User entity created, return email and _id
- * @return {string} 400 - Invalid password format
+ * @return {string} 400 - Invalid entity fields
  * @return {object} 409 - Email already in use
  */
 module.exports.register = async (request, response) => {
   const { email, password, name, country } = request.body;
-  let user = await User.findOne({ email });
 
-  if (user) {
-    response.status(409);
-    response.send('Email taken');
+  if (!(email && password && name && country)) {
+    response.status(400);
+    response.send('Missing user fields');
+    return;
+  }
+
+  if (
+    typeof email !== 'string' ||
+    typeof password !== 'string' ||
+    typeof name !== 'string' ||
+    typeof country !== 'string'
+  ) {
+    response.status(400);
+    response.send('Invalid user fields');
     return;
   }
 
   if (!password.match(PASSWORD_REGEX)) {
     response.status(400);
     response.send('Invalid password format');
+    return;
+  }
+
+  let user = await User.findOne({ email });
+
+  if (user) {
+    response.status(409);
+    response.send('Email taken');
     return;
   }
 

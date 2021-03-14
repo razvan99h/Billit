@@ -6,6 +6,7 @@ const logger = require('./logger');
 
 mongoose.connect(config.DATABASE);
 mongoose.Promise = global.Promise;
+mongoose.set('useFindAndModify', false);
 
 mongoose.connection.on('connected', () => {
   logger.info('Mongoose connected!');

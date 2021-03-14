@@ -1,5 +1,7 @@
 const User = require('./user.model');
 const Bill = require('./../bill/bill.model');
+const Product = require('./../bill/product.model');
+
 /**
  * User entity
  * @typedef {object} User
@@ -58,6 +60,8 @@ module.exports.update = async (request, response) => {
  * @return {object} 404 - User not found
  */
 module.exports.remove = async (request, response) => {
+  const billsToDelete = await Bill.find({ owner: request.params.id });
+  await Product.deleteMany({ bill: { $in: billsToDelete.map((b) => b._id) } });
   await Bill.deleteMany({ owner: request.params.id });
   await User.findByIdAndRemove(request.params.id);
   response.json(request.params.id);

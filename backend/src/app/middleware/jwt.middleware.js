@@ -1,4 +1,5 @@
 const { JWT_SECRET } = require('../../config');
+const User = require('../api/user/user.model');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
@@ -11,10 +12,13 @@ module.exports.authenticateToken = (request, response, next) => {
     response.sendStatus(401);
     return;
   }
-
-  jwt.verify(token, JWT_SECRET, (error, id) => {
-    if (error || !mongoose.Types.ObjectId.isValid(id)) {
-      response.sendStatus(403);
+  jwt.verify(token, JWT_SECRET, async (error, id) => {
+    if (
+      error ||
+      !mongoose.Types.ObjectId.isValid(id) ||
+      !(await User.findById(id))
+    ) {
+      response.sendStatus(401);
       return;
     }
     request.principal = id;
