@@ -1,3 +1,7 @@
+ion-item{
+  --ion-background-color: transparent;
+}
+
 .main-container {
   padding: 0 12vw;
   height: 100%;
@@ -13,7 +17,22 @@
   margin-bottom: 64px;
 }
 
-.input-field {
+.input-container {
   width: 100%;
-  margin-bottom: 16px;
+}
+
+.toggle-password-icon {
+  margin-top: 1em;
+}
+
+.register-text {
+  font-weight: bold;
+  font-size: small;
+  color: var(--ion-color-primary);
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--ion-color-step-150, rgba(0, 0, 0, 0.13));
 }

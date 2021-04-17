@@ -1,15 +1,53 @@
 <ion-content>
-  <div class="main-container">
-    <img src="assets/img/logo.png" class="logo"/>
+  <div class="main-container" [formGroup]="form">
+    <img src="assets/img/logo.png" alt="logo" class="logo"/>
 
-    <ion-item class="input-field">
-      <ion-label position="floating">Email</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
+    <div class="input-container">
+      <ion-item class="input-field">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input formControlName="email"></ion-input>
+      </ion-item>
 
-    <ion-item class="input-field">
-      <ion-label position="floating">Password</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
+      <p class="input-error-message ion-padding-start"
+         *ngIf="showErrors && !form.controls.email.valid">
+        Invalid email address
+      </p>
+
+      <ion-item class="input-field">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input formControlName="password"
+                   [type]="showPassword ? 'text' : 'password'">
+        </ion-input>
+        <ion-icon slot="end" class="toggle-password-icon"
+                  [name]="showPassword ? 'eye' : 'eye-off'"
+                  (click)="toggleShowPassword()">
+        </ion-icon>
+      </ion-item>
+
+      <p class="input-error-message ion-padding-start"
+         *ngIf="showErrors && !form.controls.password.valid">
+        Password must contain at least 8 characters, one lowercase and one uppercase letter, a number and a special
+        symbol
+      </p>
+    </div>
+
+    <div class="d-flex flex-column">
+      <ion-button shape="round" class="my-3"
+                  (click)="login()">
+        Login
+      </ion-button>
+
+      <div class="d-flex align-items-center">
+        <div class="divider"></div>
+        <div class="mx-3">or</div>
+        <div class="divider"></div>
+      </div>
+
+      <ion-button shape="round" fill="outline" class="my-3">Create an account</ion-button>
+      <!--      <div class="register-text">-->
+      <!--        NEW TO THIS PLATFORM?-->
+      <!--      </div>-->
+
+    </div>
   </div>
 </ion-content>
