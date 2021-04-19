@@ -1,6 +1,7 @@
 <ion-content>
-  <div class="main-container" [formGroup]="form">
-    <img src="assets/img/logo.png" alt="logo" class="logo"/>
+  <div class="main-container"
+       [formGroup]="form">
+    <img src="../../../../assets/img/logo.png" alt="logo" class="logo"/>
 
     <div class="input-container">
       <ion-item class="input-field">
@@ -10,7 +11,7 @@
 
       <p class="input-error-message ion-padding-start"
          *ngIf="showErrors && !form.controls.email.valid">
-        Invalid email address
+        {{ERROR_EMAIL}}
       </p>
 
       <ion-item class="input-field">
@@ -26,8 +27,7 @@
 
       <p class="input-error-message ion-padding-start"
          *ngIf="showErrors && !form.controls.password.valid">
-        Password must contain at least 8 characters, one lowercase and one uppercase letter, a number and a special
-        symbol
+        {{ERROR_PASSWORD}}
       </p>
     </div>
 
@@ -43,11 +43,10 @@
         <div class="divider"></div>
       </div>
 
-      <ion-button shape="round" fill="outline" class="my-3">Create an account</ion-button>
-      <!--      <div class="register-text">-->
-      <!--        NEW TO THIS PLATFORM?-->
-      <!--      </div>-->
-
+      <ion-button shape="round" fill="outline" class="my-3"
+                  [routerLink]="['/register']">
+        Create an account
+      </ion-button>
     </div>
   </div>
 </ion-content>

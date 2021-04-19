@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PASSWORD_REGEX } from '../../services/contants';
+import { ERROR_EMAIL, ERROR_PASSWORD, PASSWORD_REGEX } from '../../../services/constants';
 import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  styleUrls: ['./login.page.scss', './../auth.styles.scss'],
 })
 export class LoginPage implements OnInit {
+  readonly ERROR_EMAIL = ERROR_EMAIL;
+  readonly ERROR_PASSWORD = ERROR_PASSWORD;
   form: FormGroup;
   showErrors = false;
   showPassword = false;
@@ -58,7 +60,10 @@ export class LoginPage implements OnInit {
       return;
     }
     this.authService
-      .login(this.form.value.email, this.form.value.password)
+      .login({
+        email: this.form.value.email,
+        password: this.form.value.password
+      })
       .subscribe(() => {
         console.log('SUCCESS!'); // TODO: remove and reroute to homepage
       }, () => this.presentErrorToast());

@@ -53,7 +53,7 @@ module.exports.loggedIn = async (request, response) => {
 /**
  * POST /api/auth/register
  * @summary Register user with email, password and some details
- * @param {object} request.body Email, un-hashed password, name, city and country of a user
+ * @param {object} request.body Email, un-hashed password, name, and country of a user
  * @return {object} 201 - User entity created, return email and _id
  * @return {string} 400 - Invalid entity fields
  * @return {object} 409 - Email already in use

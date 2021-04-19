@@ -1,3 +1,7 @@
+html, body {
+  line-height: 1.2 !important;
+}
+
 ion-content {
   // override
   --background: url("../img/background-polygons.png") no-repeat 100% 100%;
@@ -5,11 +9,17 @@ ion-content {
 
 .input-field {
   // override
-  margin-bottom: 24px !important;
+  margin-bottom: 20px !important;
 }
 
 .input-error-message {
-  margin: -18px 0 0 0;
+  margin: -15px 0 0 0;
   font-size: small;
   color: var(--ion-color-danger);
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--ion-color-step-150, rgba(0, 0, 0, 0.13));
 }

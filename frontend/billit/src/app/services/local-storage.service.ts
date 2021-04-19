@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginData } from '../models/local-storage/login-data.model';
+import { LoginResponse } from '../models/api/loginResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,11 @@ export class LocalStorageService {
   constructor() {
   }
 
-  get loginData(): LoginData {
+  get loginData(): LoginResponse {
     return JSON.parse(localStorage.getItem(this.loginPath));
   }
 
-  set loginData(value: LoginData) {
+  set loginData(value: LoginResponse) {
     localStorage.setItem(this.loginPath, JSON.stringify(value));
   }
 

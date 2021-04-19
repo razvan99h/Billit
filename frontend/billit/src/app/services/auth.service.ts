@@ -4,13 +4,13 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { map } from 'rxjs/operators';
-import { LoginData } from '../models/local-storage/login-data.model';
+import { LoginRequest, LoginResponse, RegisterRequest } from '../models/api/loginResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private url = environment.API_URL + 'auth/login';
+  private url = environment.API_URL + 'auth/';
 
   constructor(
     private httpClient: HttpClient,
@@ -25,16 +25,24 @@ export class AuthService {
     return this.localStorageService.loginData.jwt;
   }
 
-  login(email: string, password: string): Observable<void> {
-    console.log('login <<< email, password:', email, password);
+  login(request: LoginRequest): Observable<void> {
+    console.log('login <<< request', request);
     return this.httpClient
-      .post<LoginData>(this.url, {
-        email, password,
-      })
+      .post<LoginResponse>(this.url + 'login', request)
       .pipe(
         map(response => {
           console.log('login >>> response:', response);
           this.localStorageService.loginData = response;
+        }));
+  }
+
+  register(request: RegisterRequest): Observable<void> {
+    console.log('register <<< request:', request);
+    return this.httpClient
+      .post(this.url + 'register', request)
+      .pipe(
+        map(response => {
+          console.log('register >>> response:', response);
         }));
   }
 }

@@ -1,0 +1,29 @@
+.main-container {
+  padding-top: 2em !important;
+  justify-content: start !important;
+
+  .header-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 0.5em;
+
+    ion-button {
+      --padding-start: 0.5em;
+      --padding-end: 0.5em;
+      --color: var(--ion-text-color);
+    }
+
+    .header-text {
+      margin-bottom: 0;
+      margin-left: 0.5em;
+    }
+  }
+}
+
+
+.button-native {
+  // override
+  padding-inline-start: 0 !important;
+}
