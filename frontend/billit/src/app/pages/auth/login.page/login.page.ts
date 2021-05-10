@@ -3,6 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ERROR_EMAIL, ERROR_PASSWORD, PASSWORD_REGEX } from '../../../services/constants';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private toastController: ToastController,
+    private router: Router,
   ) {
     this.form = this.formBuilder.group({
       email: [
@@ -65,7 +67,7 @@ export class LoginPage implements OnInit {
         password: this.form.value.password
       })
       .subscribe(() => {
-        console.log('SUCCESS!'); // TODO: remove and reroute to homepage
+        this.router.navigateByUrl('');
       }, () => this.presentErrorToast());
   }
 }

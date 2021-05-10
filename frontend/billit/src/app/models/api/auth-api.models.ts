@@ -15,3 +15,6 @@ export interface RegisterRequest {
   country: string;
 }
 
+export interface CheckLoginRequest {
+  jwt: string;
+}

@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { map } from 'rxjs/operators';
-import { LoginRequest, LoginResponse, RegisterRequest } from '../models/api/loginResponse';
+import { CheckLoginRequest, LoginRequest, LoginResponse, RegisterRequest } from '../models/api/auth-api.models';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,17 @@ export class AuthService {
       return '';
     }
     return this.localStorageService.loginData.jwt;
+  }
+
+  isLoggedIn(request: CheckLoginRequest): Observable<boolean> {
+    console.log('isLoggedIn <<< request', request);
+    return this.httpClient
+      .post<boolean>(this.url + 'logged-in', request)
+      .pipe(
+        map(response => {
+          console.log('isLoggedIn >>> response:', response);
+          return response;
+        }));
   }
 
   login(request: LoginRequest): Observable<void> {

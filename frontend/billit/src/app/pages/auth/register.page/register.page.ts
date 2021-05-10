@@ -3,6 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ERROR_COUNTRY, ERROR_EMAIL, ERROR_NAME, ERROR_PASSWORD, ERROR_PASSWORD_MATCH, PASSWORD_REGEX } from '../../../services/constants';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +24,7 @@ export class RegisterPage implements OnInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private toastController: ToastController,
+    private router: Router,
   ) {
     this.form = this.formBuilder.group({
       email: [
@@ -59,9 +61,18 @@ export class RegisterPage implements OnInit {
     this.showPasswords = !this.showPasswords;
   }
 
+  async presentSuccessToast() {
+    const toast = await this.toastController.create({
+      message: 'Account created! Please login now',
+      color: 'success',
+      duration: 2000
+    });
+    await toast.present();
+  }
+
   async presentErrorToast() {
     const toast = await this.toastController.create({
-      message: 'Register failed!',
+      message: 'Account creation failed!',
       color: 'danger',
       duration: 2000
     });
@@ -81,7 +92,8 @@ export class RegisterPage implements OnInit {
         country: this.form.value.country,
       })
       .subscribe(() => {
-        console.log('SUCCESS REGISTER!'); // TODO: remove and reroute to homepage
+        this.presentSuccessToast();
+        this.router.navigateByUrl('/auth/login');
       }, () => this.presentErrorToast());
   }
 
