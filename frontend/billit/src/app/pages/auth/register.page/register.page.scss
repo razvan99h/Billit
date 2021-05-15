@@ -1,8 +1,8 @@
-.main-container {
+.billit-main-container {
   padding-top: 2em !important;
   justify-content: start !important;
 
-  .header-container {
+  .billit-header-container {
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -15,13 +15,12 @@
       --color: var(--ion-text-color);
     }
 
-    .header-text {
+    .billit-header-text {
       margin-bottom: 0;
       margin-left: 0.5em;
     }
   }
 }
-
 
 .button-native {
   // override

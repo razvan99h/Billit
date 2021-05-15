@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { map } from 'rxjs/operators';
@@ -55,5 +55,11 @@ export class AuthService {
         map(response => {
           console.log('register >>> response:', response);
         }));
+  }
+
+  logout() {
+    console.log('logout <<<');
+    this.localStorageService.clearLoginData();
+    console.log('logout >>>');
   }
 }

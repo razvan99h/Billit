@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ERROR_EMAIL, ERROR_PASSWORD, PASSWORD_REGEX } from '../../../services/constants';
+import { ERROR_EMAIL, ERROR_PASSWORD, PASSWORD_REGEX } from '../../../shared/services/constants';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 

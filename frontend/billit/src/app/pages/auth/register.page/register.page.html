@@ -1,25 +1,25 @@
 <ion-content>
-  <div class="main-container"
+  <div class="billit-main-container"
        [formGroup]="form">
 
-    <div class="header-container">
+    <div class="billit-header-container">
       <ion-button fill="clear" shape="round"
                   [routerLink]="['/auth/login']">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
 
-      <h5 class="header-text">
+      <h5 class="billit-header-text">
         Create a new account
       </h5>
     </div>
 
-    <div class="input-container">
+    <div class="billit-input-container">
       <ion-item class="input-field">
         <ion-label position="floating">Email</ion-label>
         <ion-input formControlName="email"></ion-input>
       </ion-item>
 
-      <p class="input-error-message ion-padding-start"
+      <p class="billit-input-error-message ion-padding-start"
          *ngIf="showErrors && !form.controls.email.valid">
         {{ERROR_EMAIL}}
       </p>
@@ -29,13 +29,13 @@
         <ion-input formControlName="password"
                    [type]="showPasswords ? 'text' : 'password'">
         </ion-input>
-        <ion-icon slot="end" class="toggle-password-icon"
+        <ion-icon slot="end" class="billit-toggle-password-icon"
                   [name]="showPasswords ? 'eye' : 'eye-off'"
                   (click)="toggleShowPassword()">
         </ion-icon>
       </ion-item>
 
-      <p class="input-error-message ion-padding-start"
+      <p class="billit-input-error-message ion-padding-start"
          *ngIf="showErrors && !form.controls.password.valid">
         {{ERROR_PASSWORD}}
       </p>
@@ -45,13 +45,13 @@
         <ion-input formControlName="confirmPassword"
                    [type]="showPasswords ? 'text' : 'password'">
         </ion-input>
-        <ion-icon slot="end" class="toggle-password-icon"
+        <ion-icon slot="end" class="billit-toggle-password-icon"
                   [name]="showPasswords ? 'eye' : 'eye-off'"
                   (click)="toggleShowPassword()">
         </ion-icon>
       </ion-item>
 
-      <p class="input-error-message ion-padding-start"
+      <p class="billit-input-error-message ion-padding-start"
          *ngIf="showErrors && (!form.controls.confirmPassword.valid || form.errors?.notEqual)">
         {{ERROR_PASSWORD_MATCH}}
       </p>
@@ -61,7 +61,7 @@
         <ion-input formControlName="name"></ion-input>
       </ion-item>
 
-      <p class="input-error-message ion-padding-start"
+      <p class="billit-input-error-message ion-padding-start"
          *ngIf="showErrors && !form.controls.name.valid">
         {{ERROR_NAME}}
       </p>
@@ -71,7 +71,7 @@
         <ion-input formControlName="country"></ion-input>
       </ion-item>
 
-      <p class="input-error-message ion-padding-start"
+      <p class="billit-input-error-message ion-padding-start"
          *ngIf="showErrors && !form.controls.country.valid">
         {{ERROR_COUNTRY}}
       </p>

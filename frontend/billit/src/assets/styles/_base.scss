@@ -4,22 +4,16 @@ html, body {
 
 ion-content {
   // override
-  --background: url("../img/background-polygons.png") no-repeat 100% 100%;
+  --background: url("../img/background-polygons.png") 0 0/100% 100% no-repeat;
+}
+
+ion-label, p, h1, h2, h3, h4, h5, h6 {
+  // override
+  // text color almost everywhere
+  --color: var(--ion-text-color) !important;
 }
 
 .input-field {
   // override
   margin-bottom: 20px !important;
-}
-
-.input-error-message {
-  margin: -15px 0 0 0;
-  font-size: small;
-  color: var(--ion-color-danger);
-}
-
-.divider {
-  height: 1px;
-  width: 100%;
-  background-color: var(--ion-color-step-150, rgba(0, 0, 0, 0.13));
 }

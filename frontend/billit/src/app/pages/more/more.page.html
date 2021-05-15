@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="billit-app-bar">
+      <img alt="logo" class="billit-toolbar-logo" src="assets/img/logo.png">
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="billit-more-page">
+  <ion-list>
+    <ion-item button>
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-label>My account</ion-label>
+    </ion-item>
+    <ion-item button (click)="logout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+      <ion-label>Logout</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

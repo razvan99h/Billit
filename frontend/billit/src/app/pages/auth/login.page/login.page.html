@@ -1,15 +1,15 @@
 <ion-content>
-  <div class="main-container"
+  <div class="billit-main-container"
        [formGroup]="form">
-    <img src="../../../../assets/img/logo.png" alt="logo" class="logo"/>
+    <img src="../../../../assets/img/logo.png" alt="logo" class="billit-logo"/>
 
-    <div class="input-container">
+    <div class="billit-input-container">
       <ion-item class="input-field">
         <ion-label position="floating">Email</ion-label>
         <ion-input formControlName="email"></ion-input>
       </ion-item>
 
-      <p class="input-error-message ion-padding-start"
+      <p class="billit-input-error-message ion-padding-start"
          *ngIf="showErrors && !form.controls.email.valid">
         {{ERROR_EMAIL}}
       </p>
@@ -19,13 +19,13 @@
         <ion-input formControlName="password"
                    [type]="showPassword ? 'text' : 'password'">
         </ion-input>
-        <ion-icon slot="end" class="toggle-password-icon"
+        <ion-icon slot="end" class="billit-toggle-password-icon"
                   [name]="showPassword ? 'eye' : 'eye-off'"
                   (click)="toggleShowPassword()">
         </ion-icon>
       </ion-item>
 
-      <p class="input-error-message ion-padding-start"
+      <p class="billit-input-error-message ion-padding-start"
          *ngIf="showErrors && !form.controls.password.valid">
         {{ERROR_PASSWORD}}
       </p>
@@ -38,9 +38,9 @@
       </ion-button>
 
       <div class="d-flex align-items-center">
-        <div class="divider"></div>
+        <div class="billit-divider"></div>
         <div class="mx-3">or</div>
-        <div class="divider"></div>
+        <div class="billit-divider"></div>
       </div>
 
       <ion-button shape="round" fill="outline" class="my-3"

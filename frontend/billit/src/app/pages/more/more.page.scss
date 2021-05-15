@@ -1,0 +1,17 @@
+ion-content {
+  // override
+  --background: var(--ion-color-primary-contrast);
+}
+
+.billit-app-bar {
+  justify-content: center;
+}
+
+.billit-more-page {
+  ion-item {
+    ion-icon {
+      margin: 0 0.5em;
+      color: var(--billit-icon-color);
+    }
+  }
+}

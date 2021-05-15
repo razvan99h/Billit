@@ -6,9 +6,9 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthService } from './services/auth.service';
-import { LocalStorageService } from './services/local-storage.service';
-import { RequestInterceptor } from './services/request-interceptor';
+import { AuthService } from './shared/services/auth.service';
+import { LocalStorageService } from './shared/services/local-storage.service';
+import { RequestInterceptor } from './shared/services/request-interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
