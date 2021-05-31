@@ -6,7 +6,11 @@ const UserSchema = new mongoose.Schema(
     email: String,
     name: String,
     country: String,
-    hash: String
+    hash: String,
+    currency: {
+      type: String,
+      default: 'RON'
+    }
   },
   {
     timestamps: true

@@ -6,6 +6,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   jwt: string;
   _id: string;
+  currency: string;
 }
 
 export interface RegisterRequest {

@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon class="billit-header-icon" slot="start" name="arrow-back" (click)="goBack()">
+    </ion-icon>
+    <div class="billit-app-bar">
+      <img alt="logo" class="billit-toolbar-logo" src="assets/img/icon-white.png">
+    </div>
+    <!-- here only to achieve header equilibrium-->
+    <ion-icon class="billit-header-icon" slot="end" color="primary" name="arrow-back">
+    </ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="billit-add-container">
+
+    <section class="billit-add-top-section">
+      <h5>
+        Bill info
+      </h5>
+
+      <ion-card>
+        <ion-card-content class="billit-add-info-card">
+          <div class="billit-add-datetime-row">
+            <div class="billit-add-date">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <ion-item>
+                <ion-datetime displayFormat="DD MMM YY" placeholder="Date" [(ngModel)]="date"></ion-datetime>
+              </ion-item>
+            </div>
+            <div class="billit-add-time">
+              <ion-icon name="time-outline"></ion-icon>
+              <ion-item>
+                <ion-datetime displayFormat="HH:mm" placeholder="Time" [(ngModel)]="time"></ion-datetime>
+              </ion-item>
+            </div>
+          </div>
+
+          <div class="billit-add-row">
+            <ion-icon name="cart"></ion-icon>
+            <ion-item>
+              <ion-label position="floating">Store name</ion-label>
+              <ion-input [(ngModel)]="storeName"></ion-input>
+            </ion-item>
+          </div>
+
+          <div class="billit-add-row">
+            <ion-icon name="finger-print-outline"></ion-icon>
+            <ion-item>
+              <ion-label position="floating">Bill number</ion-label>
+              <ion-input [(ngModel)]="billNumber"></ion-input>
+            </ion-item>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+      <h5>
+        Products
+      </h5>
+
+      <ion-card *ngFor="let product of products; let i = index" class="billit-add-card">
+        <ion-item-sliding>
+          <ion-item-options side="start">
+            <ion-item-option *ngIf="products.length > 1" (click)="removeProduct(i)">
+              Remove
+            </ion-item-option>
+          </ion-item-options>
+
+          <ion-item>
+            <ion-card-content>
+              <div class="billit-add-product-row">
+                <div class="billit-add-product-name">
+                  <p>
+                    Name:
+                  </p>
+                  <ion-item>
+                    <ion-input placeholder="ex: Milk" [(ngModel)]="product.name"></ion-input>
+                  </ion-item>
+                </div>
+
+                <div class="billit-add-product-qty">
+                  <p>
+                    Qty:
+                  </p>
+                  <ion-item>
+                    <ion-input type="number"
+                               [(ngModel)]="product.quantity"
+                               (input)="computeBillTotal()">
+                    </ion-input>
+                  </ion-item>
+                </div>
+              </div>
+
+              <div class="billit-empty-line"></div>
+
+              <div class="billit-add-product-row">
+                <div class="billit-add-product-price">
+                  <p>
+                    Price:
+                  </p>
+                  <ion-item>
+                    <ion-input placeholder="ex: 12.5"
+                               type="number"
+                               [(ngModel)]="product.price"
+                               (ngModelChange)="computeBillTotal()">
+                    </ion-input>
+                  </ion-item>
+                  <div class="billit-add-product-empty-space"></div>
+                </div>
+
+                <div class="billit-add-product-total">
+                  <p>
+                    Total:
+                  </p>
+                  <p>
+                    {{product.computeTotal().toFixed(2)}} {{currency}}
+                  </p>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-card>
+
+      <div class="billit-add-button-row">
+        <ion-fab-button size="small">
+          <ion-icon name="add" (click)="addProduct()"></ion-icon>
+        </ion-fab-button>
+      </div>
+    </section>
+
+    <section class="billit-add-bottom-section">
+      <h5>
+        Total: {{billTotal.toFixed(2)}} {{currency}}
+      </h5>
+      <ion-button color="primary" (click)="save()">
+        Save
+      </ion-button>
+    </section>
+
+  </main>
+</ion-content>

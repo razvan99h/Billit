@@ -1,4 +1,30 @@
-.billit-app-bar {
-  // TODO: remove after adding buttons on toolbar
-  justify-content: center;
+.billit-card-row {
+  display: flex;
+  justify-content: space-between;
+
+  .billit-top-row-element {
+    display: flex;
+    font-weight: normal;
+
+    ion-icon {
+      font-size: 0.9em;
+      padding-top: 0.1em;
+      margin-left: 0.19em;
+      margin-right: 0.6em;
+    }
+  }
+
+  .billit-price {
+    font-weight: normal;
+  }
+
+  .billit-bottom-row-element {
+    display: flex;
+    font-size: 0.9em;
+    color: var(--billit-icon-color);
+
+    ion-icon {
+      margin-right: 0.25em;
+    }
+  }
 }

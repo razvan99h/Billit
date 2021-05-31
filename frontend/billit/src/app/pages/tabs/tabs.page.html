@@ -1,17 +1,17 @@
 <ion-tabs>
 
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="bills">
+    <ion-tab-button tab="bills" [disabled]="checkFormActive()">
       <ion-icon name="receipt"></ion-icon>
       <ion-label>Bills</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="statistics">
+    <ion-tab-button tab="statistics" [disabled]="checkFormActive()">
       <ion-icon name="stats-chart"></ion-icon>
       <ion-label>Stats</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="more">
+    <ion-tab-button tab="more" [disabled]="checkFormActive()">
       <ion-icon name="ellipsis-horizontal"></ion-icon>
       <ion-label>More</ion-label>
     </ion-tab-button>

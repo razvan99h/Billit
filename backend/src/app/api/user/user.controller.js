@@ -8,6 +8,7 @@ const Product = require('./../bill/product.model');
  * @property {string} email.required
  * @property {string} name.required
  * @property {string} country.required
+ * @property {string} currency
  */
 
 module.exports.userExists = async (request, response, next) => {

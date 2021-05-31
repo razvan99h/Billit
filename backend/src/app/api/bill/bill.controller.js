@@ -1,6 +1,7 @@
 const Bill = require('./bill.model');
 const Product = require('./product.model');
 const User = require('./../user/user.model');
+const { toPlainBillObject } = require('./bill.utils');
 
 /**
  * Bill entity
@@ -73,9 +74,12 @@ module.exports.validateBillFields = async (request, response, next) => {
  * @return {object} 403 - Resource not owned
  */
 module.exports.listOwnedBills = async (request, response) => {
-  const bills = await Bill.find({ owner: request.principal }).populate(
-    'products'
-  );
+  let bills = await Bill.find({ owner: request.principal })
+    .populate('products')
+    .sort({ date: -1 });
+
+  bills = bills.map((bill) => toPlainBillObject(bill));
+
   response.json(bills);
 };
 
@@ -90,7 +94,7 @@ module.exports.listOwnedBills = async (request, response) => {
  */
 module.exports.billDetails = async (request, response) => {
   const bill = await Bill.findById(request.params.id).populate('products');
-  response.json(bill);
+  response.json(toPlainBillObject(bill));
 };
 
 /**

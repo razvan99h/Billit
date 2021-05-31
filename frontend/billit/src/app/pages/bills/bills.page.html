@@ -1,11 +1,64 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-icon class="billit-header-icon" slot="start" name="search">
+    </ion-icon>
     <div class="billit-app-bar">
-      <img alt="logo" class="billit-toolbar-logo" src="assets/img/logo.png">
+      <img alt="logo" class="billit-toolbar-logo" src="assets/img/icon-white.png">
     </div>
+    <ion-icon class="billit-header-icon" slot="end" name="filter">
+    </ion-icon>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" size="medium">
+    <ion-fab-button size="small">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button>
+        <ion-icon name="pencil" color="primary" (click)="goToAdd()"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-icon name="scan" color="primary"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-card *ngFor="let bill of bills">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <div class="billit-card-row">
+          <div class="billit-top-row-element">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <div>
+              {{bill.getDateString()}}
+            </div>
+          </div>
+          <div class="billit-top-row-element">
+            <ion-icon name="time-outline"></ion-icon>
+            <div>
+              {{bill.getTimeString()}}
+            </div>
+          </div>
+        </div>
+      </ion-card-subtitle>
+
+      <ion-card-title>
+        <div class="billit-card-row">
+          <div class="billit-bottom-row-element">
+            <ion-icon name="cart"></ion-icon>
+            <div>
+              {{bill.store}}
+            </div>
+          </div>
+          <div class="billit-bottom-row-element billit-price">
+            {{bill.total.toFixed(2) + ' ' + currency}}
+          </div>
+        </div>
+      </ion-card-title>
+    </ion-card-header>
+
+  </ion-card>
 
 </ion-content>

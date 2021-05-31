@@ -32,7 +32,11 @@ module.exports.login = async (request, response) => {
   const result = await bcrypt.compare(password, user.hash);
   if (result) {
     const token = generateToken(user._id.toString());
-    response.json({ jwt: token, _id: user._id });
+    response.json({
+      jwt: token,
+      _id: user._id,
+      currency: user.currency
+    });
   } else {
     response.status(400);
     response.send('Login failed');

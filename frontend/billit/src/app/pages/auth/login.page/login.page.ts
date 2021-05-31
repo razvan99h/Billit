@@ -55,7 +55,6 @@ export class LoginPage implements OnInit {
     await toast.present();
   }
 
-
   login() {
     if (!this.form.valid) {
       this.showErrors = true;
