@@ -5,14 +5,16 @@ export class Bill {
   _id: string;
   store: string;
   number: string;
+  currency: string;
   date: Date;
   total: number;
   products: Array<Product>;
 
-  constructor(id: string, store: string, billNumber: string, date: Date, total: number, products: Array<Product>) {
+  constructor(id: string, store: string, billNumber: string, currency: string, date: Date, total: number, products: Array<Product>) {
     this._id = id;
     this.store = store;
     this.number = billNumber;
+    this.currency = currency;
     this.date = date;
     this.total = total;
     this.products = products;
@@ -21,7 +23,7 @@ export class Bill {
   static fromJSON(json: any): Bill {
     const date = new Date(json.date);
     const products = json.products.map(productJSON => Product.fromJSON(productJSON));
-    return new Bill(json._id, json.store, json.number, date, json.total, products);
+    return new Bill(json._id, json.store, json.number, json.currency, date, json.total, products);
   }
 
   getDateString(): string {

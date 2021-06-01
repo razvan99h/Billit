@@ -14,7 +14,11 @@ const BillSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
       }
-    ]
+    ],
+    currency: {
+      type: String,
+      default: 'RON'
+    }
   },
   {
     timestamps: true

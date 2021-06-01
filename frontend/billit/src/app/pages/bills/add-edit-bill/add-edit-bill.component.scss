@@ -42,6 +42,20 @@
       font-size: 2em;
       color: var(--billit-icon-color);
     }
+
+    .billit-add-floating-input {
+      // override
+
+      ion-label {
+        margin-top: -0.35em;
+      }
+
+      ion-input {
+        // override
+        --padding-start: 0;
+        --padding-bottom: 0;
+      }
+    }
   }
 
   .billit-add-date {

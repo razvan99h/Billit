@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import { SharedService } from '../../../shared/services/shared.service';
 import { take } from 'rxjs/operators';
 import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.action';
+import { CURRENCIES } from '../../../shared/services/constants';
 
 @Component({
   selector: 'app-add-bill',
@@ -21,10 +22,12 @@ export class AddEditBillComponent implements OnInit {
   time: string;
   storeName: string;
   billNumber: string;
+  billCurrency: string;
   products: Array<Product> = [];
   billTotal = 0;
-  currency: string;
   isAddMode = true;
+  currencies = CURRENCIES;
+  private readonly userCurrency: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,12 +39,13 @@ export class AddEditBillComponent implements OnInit {
     private location: Location,
     private alertController: AlertController,
   ) {
-    this.currency = localStorageService.loginData.currency;
+    this.userCurrency = localStorageService.loginData.currency;
 
     if (this.router.url === '/tabs/bills/add') {
       this.id = null;
       this.products.push(new Product(null, null, null, null));
       this.date = this.time = new Date().toISOString();
+      this.billCurrency = this.userCurrency;
     } else {
       this.isAddMode = false;
       this.sharedService
@@ -52,6 +56,7 @@ export class AddEditBillComponent implements OnInit {
           this.date = this.time = bill.date.toISOString();
           this.storeName = bill.store;
           this.billNumber = bill.number;
+          this.billCurrency = bill.currency;
           this.products = bill.products;
           this.billTotal = bill.total;
         });
@@ -103,7 +108,7 @@ export class AddEditBillComponent implements OnInit {
     const time = new Date(this.time);
     date.setHours(time.getHours());
     date.setMinutes(time.getMinutes());
-    const bill = new Bill(this.id, this.storeName, this.billNumber, date, this.billTotal, this.products);
+    const bill = new Bill(this.id, this.storeName, this.billNumber, this.billCurrency, date, this.billTotal, this.products);
 
     if (this.isAddMode) {
       this.billsService.addBill(bill).subscribe(

@@ -17,7 +17,7 @@ import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.act
   styleUrls: ['./bill-details.component.scss'],
 })
 export class BillDetailsComponent implements OnInit, OnDestroy {
-  bill: Bill = new Bill(null, null, null, null, null, []);
+  bill: Bill = new Bill(null, null, null, null, null, null, []);
   currency: string;
   subscription: Subscription;
 
@@ -95,7 +95,7 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
         async () => {
           this.goBack();
           this.sharedService.sendBillInfoUpdateList([
-            new Bill(this.bill._id, null, null, null, null, null),
+            new Bill(this.bill._id, null, null, null, null, null, null),
             UpdateBillsAction.DELETE
           ]);
           await this.presentSuccessToast();

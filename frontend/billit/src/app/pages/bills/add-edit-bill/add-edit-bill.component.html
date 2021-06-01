@@ -38,7 +38,7 @@
 
           <div class="billit-add-row">
             <ion-icon name="cart"></ion-icon>
-            <ion-item>
+            <ion-item class="billit-add-floating-input">
               <ion-label position="floating">Store name</ion-label>
               <ion-input [(ngModel)]="storeName"></ion-input>
             </ion-item>
@@ -46,9 +46,22 @@
 
           <div class="billit-add-row">
             <ion-icon name="finger-print-outline"></ion-icon>
-            <ion-item>
+            <ion-item class="billit-add-floating-input" >
               <ion-label position="floating">Bill number</ion-label>
               <ion-input [(ngModel)]="billNumber"></ion-input>
+            </ion-item>
+          </div>
+
+          <div class="billit-add-row">
+            <ion-icon name="cash-outline"></ion-icon>
+            <ion-item>
+              <ion-label>Currency</ion-label>
+              <ion-select [value]="currencies" [(ngModel)]="billCurrency">
+                <ion-select-option *ngFor="let currency of currencies"
+                                   value="{{currency}}">
+                  {{currency}}
+                </ion-select-option>
+              </ion-select>
             </ion-item>
           </div>
 
@@ -114,7 +127,7 @@
                     Total:
                   </p>
                   <p>
-                    {{product.computeTotal().toFixed(2)}} {{currency}}
+                    {{product.computeTotal().toFixed(2)}} {{billCurrency}}
                   </p>
                 </div>
               </div>
@@ -132,7 +145,7 @@
 
     <section class="billit-add-bottom-section">
       <h5>
-        Total: {{billTotal.toFixed(2)}} {{currency}}
+        Total: {{billTotal.toFixed(2)}} {{billCurrency}}
       </h5>
       <ion-button shape="round" color="primary" (click)="save()">
         {{isAddMode ? 'Save' : 'Edit'}}

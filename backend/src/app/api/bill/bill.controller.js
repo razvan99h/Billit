@@ -39,6 +39,9 @@ module.exports.validateBillFields = async (request, response, next) => {
   if (bill.number !== undefined && typeof bill.number !== 'string') {
     message = 'Bill number should be a string';
   }
+  if (bill.currency !== undefined && typeof bill.currency !== 'string') {
+    message = 'Bill currency should be a string';
+  }
   if (bill.date !== undefined && !Date.parse(bill.date)) {
     message = 'Bill date invalid';
   }
@@ -107,14 +110,14 @@ module.exports.billDetails = async (request, response) => {
  */
 module.exports.addBill = async (request, response) => {
   const owner = await User.findById(request.principal);
-  const { store, number, date, products } = request.body;
-  if (!(store && number && date && products)) {
+  const { store, number, currency, date, products } = request.body;
+  if (!(store && number && currency && date && products)) {
     response.status(400);
     response.send('Missing bill fields');
     return;
   }
 
-  let bill = await Bill.create({ owner, store, number, date });
+  let bill = await Bill.create({ owner, store, number, currency, date });
 
   const productEntities = await Promise.all(
     products.map((product) =>
