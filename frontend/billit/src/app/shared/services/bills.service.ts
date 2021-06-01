@@ -27,25 +27,25 @@ export class BillsService {
         }));
   }
 
-  addBill(bill: Bill): Observable<void> {
+  addBill(bill: Bill): Observable<Bill> {
     console.log('addBill <<< bill: ', bill);
     return this.httpClient
       .post<Array<Bill>>(this.url, bill)
       .pipe(
         map(response => {
           console.log('addBill >>> response:', response);
-          return;
+          return Bill.fromJSON(response);
         }));
   }
 
-  editBill(bill: Bill): Observable<void> {
+  editBill(bill: Bill): Observable<Bill> {
     console.log('editBill <<< bill: ', bill);
     return this.httpClient
       .put<Array<Bill>>(this.url + bill._id, bill)
       .pipe(
         map(response => {
           console.log('editBill >>> response:', response);
-          return;
+          return Bill.fromJSON(response);
         }));
   }
 

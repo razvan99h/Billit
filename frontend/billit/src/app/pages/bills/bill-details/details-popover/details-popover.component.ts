@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { DetailsPopoverAction } from '../../../../shared/models/popovers/details-popover.action';
+import { DetailsPopoverAction } from '../../../../shared/models/enums/details-popover.action';
 
 @Component({
   selector: 'app-details-popover',

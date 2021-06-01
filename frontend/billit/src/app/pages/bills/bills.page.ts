@@ -5,6 +5,7 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../../shared/services/shared.service';
 import { Subscription } from 'rxjs';
+import { UpdateBillsAction } from '../../shared/models/enums/update-bills.action';
 
 @Component({
   selector: 'app-bills',
@@ -31,14 +32,23 @@ export class BillsPage implements OnInit, OnDestroy {
       });
     this.sharedService
       .getBillInfoUpdateList()
-      .subscribe(bill => {
-        if (!bill) {
+      .subscribe((info: [Bill, UpdateBillsAction]) => {
+        if (!info || !info[0]) {
           return;
         }
-        const index = this.bills.findIndex(b => b._id === bill._id);
-        if (bill.store) {
-          this.bills[index] = bill; // edited bill
-        } else {
+        const bill = info[0];
+        const action = info[1];
+
+        if (action === UpdateBillsAction.ADD) {
+          const index = this.bills.findIndex(b => b.date < bill.date);
+          this.bills.splice(index, 0, bill);
+        }
+        else if (action === UpdateBillsAction.EDIT) {
+          this.bills.push(bill); // edited bill
+          this.bills.sort((a, b) => b.date.getTime() - a.date.getTime());
+        }
+        else if (action === UpdateBillsAction.DELETE) {
+          const index = this.bills.findIndex(b => b._id === bill._id);
           this.bills.splice(index, 1); // deleted bill
         }
       });

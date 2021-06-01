@@ -129,26 +129,11 @@
     margin-bottom: 0.5em;
   }
 
-  .billit-add-button-row {
-    display: flex;
-    justify-content: flex-end;
-
-    ion-button {
-      border-radius: 50%;
-    }
-  }
-
   .billit-add-bottom-section {
     display: flex;
     justify-content: space-between;
     padding: 5px 8px 5px 12px;
     border-top: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.2));
-
-    ion-button {
-      width: 6em;
-      height: 3em;
-      --border-radius: 25% / 50%;
-    }
   }
 }
 

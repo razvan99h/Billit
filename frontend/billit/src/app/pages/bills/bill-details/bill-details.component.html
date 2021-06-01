@@ -10,6 +10,66 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main">
-  Bill: {{bill.store}}
+<ion-content>
+  <main class="billit-details-container">
+    <ion-card class="billit-details-card">
+      <ion-card-content class="billit-details-card-content">
+        <section class="billit-details-top">
+          <div class="d-flex justify-content-between">
+            <div class="billit-details-top-element mr-2">
+              <ion-icon name="calendar-outline"></ion-icon>
+              {{bill.getDateString()}}
+            </div>
+
+            <div class="billit-details-top-element">
+              <ion-icon name="time-outline"></ion-icon>
+              {{bill.getTimeString()}}
+            </div>
+          </div>
+
+          <div class="billit-details-top-element">
+            <ion-icon name="cart"></ion-icon>
+            <div class="billit-details-store-name">
+              {{bill.store}}
+            </div>
+          </div>
+
+          <div class="billit-details-top-element">
+            <ion-icon name="finger-print-outline"></ion-icon>
+            <div class="billit-details-bill-number">
+              {{bill.number}}
+            </div>
+          </div>
+        </section>
+
+        <div class="billit-divider"></div>
+
+        <section class="billit-details-middle">
+          <ion-list>
+            <ion-item *ngFor="let product of bill.products; let i = index"
+                      [ngClass]="(i == 0 ? 'mt-1' : '') + (i === bill.products.length - 1 ? ' billit-no-border' : '')">
+              <div class="billit-details-product">
+                <div class="d-flex justify-content-between">
+                  <div class="billit-details-product-text">{{product.name}}</div>
+                  <div class="billit-details-product-qty">Qty: {{product.quantity}}</div>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <div>{{product.quantity}} x {{product.price}}</div>
+                  <div>{{product.computeTotal()}} {{currency}}</div>
+                </div>
+              </div>
+            </ion-item>
+          </ion-list>
+        </section>
+
+        <div class="billit-divider mb-2"></div>
+
+        <section class="billit-details-bottom">
+          <div>TOTAL</div>
+          <div>{{bill.total}} {{currency}}</div>
+
+        </section>
+      </ion-card-content>
+    </ion-card>
+  </main>
 </ion-content>

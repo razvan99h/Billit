@@ -4,10 +4,11 @@ import { Product } from '../../../shared/models/product.model';
 import { BillsService } from '../../../shared/services/bills.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { Bill } from '../../../shared/models/bill.model';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { SharedService } from '../../../shared/services/shared.service';
 import { take } from 'rxjs/operators';
+import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.action';
 
 @Component({
   selector: 'app-add-bill',
@@ -33,11 +34,14 @@ export class AddEditBillComponent implements OnInit {
     private sharedService: SharedService,
     private toastController: ToastController,
     private location: Location,
+    private alertController: AlertController,
   ) {
     this.currency = localStorageService.loginData.currency;
+
     if (this.router.url === '/tabs/bills/add') {
       this.id = null;
       this.products.push(new Product(null, null, null, null));
+      this.date = this.time = new Date().toISOString();
     } else {
       this.isAddMode = false;
       this.sharedService
@@ -45,8 +49,7 @@ export class AddEditBillComponent implements OnInit {
         .pipe(take(1))
         .subscribe(bill => {
           this.id = bill._id;
-          this.date = bill.date.toISOString();
-          this.time = bill.date.toISOString();
+          this.date = this.time = bill.date.toISOString();
           this.storeName = bill.store;
           this.billNumber = bill.number;
           this.products = bill.products;
@@ -58,9 +61,27 @@ export class AddEditBillComponent implements OnInit {
   ngOnInit() {
   }
 
-  goBack() {
-    // TODO: put up dialog of confirmation before leaving
-    this.location.back();
+  async goBack() {
+    const alert = await this.alertController.create({
+      header: 'Confirm exiting form',
+      message: 'Are you sure you want to leave this form?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          role: 'confirm',
+        }]
+    });
+
+    await alert.present();
+    const {role} = await alert.onDidDismiss();
+
+    if (role === 'confirm') {
+      this.location.back();
+    }
   }
 
   removeProduct(index: number) {
@@ -86,18 +107,19 @@ export class AddEditBillComponent implements OnInit {
 
     if (this.isAddMode) {
       this.billsService.addBill(bill).subscribe(
-        async () => {
-          this.goBack();
+        async (newBill) => {
+          this.location.back();
+          this.sharedService.sendBillInfoUpdateList([newBill, UpdateBillsAction.ADD]);
           await this.presentSuccessToast();
         },
         () => this.presentErrorToast()
       );
     } else {
       this.billsService.editBill(bill).subscribe(
-        async () => {
-          this.goBack();
-          this.sharedService.sendBillInfo(bill);
-          this.sharedService.sendBillInfoUpdateList(bill);
+        async (editedBill) => {
+          this.location.back();
+          this.sharedService.sendBillInfo(editedBill);
+          this.sharedService.sendBillInfoUpdateList([editedBill, UpdateBillsAction.EDIT]);
           await this.presentSuccessToast();
         },
         () => this.presentErrorToast()

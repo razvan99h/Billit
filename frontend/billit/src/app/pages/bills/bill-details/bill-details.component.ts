@@ -3,11 +3,13 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../../../shared/services/shared.service';
 import { Bill } from '../../../shared/models/bill.model';
-import { PopoverController, ToastController } from '@ionic/angular';
+import { AlertController, PopoverController, ToastController } from '@ionic/angular';
 import { DetailsPopoverComponent } from './details-popover/details-popover.component';
-import { DetailsPopoverAction } from '../../../shared/models/popovers/details-popover.action';
+import { DetailsPopoverAction } from '../../../shared/models/enums/details-popover.action';
 import { Subscription } from 'rxjs';
 import { BillsService } from '../../../shared/services/bills.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.action';
 
 @Component({
   selector: 'app-bill-details',
@@ -16,18 +18,21 @@ import { BillsService } from '../../../shared/services/bills.service';
 })
 export class BillDetailsComponent implements OnInit, OnDestroy {
   bill: Bill = new Bill(null, null, null, null, null, []);
+  currency: string;
   subscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private billsService: BillsService,
+    private localStorageService: LocalStorageService,
     private sharedService: SharedService,
     private popoverController: PopoverController,
     private toastController: ToastController,
     private location: Location,
+    private alertController: AlertController,
   ) {
-
+    this.currency = this.localStorageService.loginData.currency;
   }
 
   ngOnInit() {
@@ -43,7 +48,28 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['./..'], {relativeTo: this.route});
+  }
+
+  async presentDeleteDialog(): Promise<boolean> {
+    const alert = await this.alertController.create({
+      header: 'Confirm deleting bill',
+      message: 'Are you sure you want to delete this bill?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          role: 'confirm',
+        }]
+    });
+
+    await alert.present();
+    const {role} = await alert.onDidDismiss();
+
+    return role === 'confirm';
   }
 
   async presentPopover(ev: any) {
@@ -61,10 +87,17 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
       this.router.navigate(['./../edit'], {relativeTo: this.route});
       this.sharedService.sendBillInfo(this.bill);
     } else if (data === DetailsPopoverAction.DELETE) {
+      const shouldDelete = await this.presentDeleteDialog();
+      if (!shouldDelete) {
+        return;
+      }
       this.billsService.deleteBill(this.bill).subscribe(
         async () => {
           this.goBack();
-          this.sharedService.sendBillInfoUpdateList(new Bill(this.bill._id, null, null, null, null, null));
+          this.sharedService.sendBillInfoUpdateList([
+            new Bill(this.bill._id, null, null, null, null, null),
+            UpdateBillsAction.DELETE
+          ]);
           await this.presentSuccessToast();
         },
         () => this.presentErrorToast()

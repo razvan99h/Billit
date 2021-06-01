@@ -14,6 +14,12 @@
     }
   }
 
+  .billit-store-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 50vw;
+  }
+
   .billit-price {
     font-weight: normal;
   }
@@ -22,6 +28,7 @@
     display: flex;
     font-size: 0.9em;
     color: var(--billit-icon-color);
+    white-space: nowrap;
 
     ion-icon {
       margin-right: 0.25em;

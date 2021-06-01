@@ -117,7 +117,14 @@ module.exports.addBill = async (request, response) => {
   let bill = await Bill.create({ owner, store, number, date });
 
   const productEntities = await Promise.all(
-    products.map((product) => Product.create({ bill, ...product }))
+    products.map((product) =>
+      Product.create({
+        bill,
+        name: product.name,
+        quantity: product.quantity,
+        price: product.price
+      })
+    )
   );
 
   bill = await Bill.findByIdAndUpdate(
@@ -125,7 +132,8 @@ module.exports.addBill = async (request, response) => {
     { products: productEntities },
     { new: true }
   ).populate('products');
-  response.json(bill);
+
+  response.json(toPlainBillObject(bill));
 };
 
 /**
@@ -177,7 +185,7 @@ module.exports.updateBill = async (request, response) => {
     new: true
   }).populate('products');
 
-  response.json(bill);
+  response.json(toPlainBillObject(bill));
 };
 
 /**

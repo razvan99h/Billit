@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Bill } from '../models/bill.model';
+import { UpdateBillsAction } from '../models/enums/update-bills.action';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
   private sourceBill = new BehaviorSubject<Bill>(null);
-  private sourceBillUpdateList = new BehaviorSubject<Bill>(null);
+  private sourceBillUpdateList = new BehaviorSubject<[Bill, UpdateBillsAction]>(null);
 
   constructor() {
   }
@@ -20,11 +21,11 @@ export class SharedService {
     this.sourceBill.next(bill);
   }
 
-  getBillInfoUpdateList(): Observable<Bill> {
+  getBillInfoUpdateList(): Observable<[Bill, UpdateBillsAction]> {
     return this.sourceBillUpdateList.asObservable();
   }
 
-  sendBillInfoUpdateList(bill: Bill): void {
-    this.sourceBillUpdateList.next(bill);
+  sendBillInfoUpdateList(info: [Bill, UpdateBillsAction]): void {
+    this.sourceBillUpdateList.next(info);
   }
 }

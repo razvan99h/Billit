@@ -123,7 +123,7 @@
         </ion-item-sliding>
       </ion-card>
 
-      <div class="billit-add-button-row">
+      <div class="d-flex justify-content-end">
         <ion-fab-button size="small">
           <ion-icon name="add" (click)="addProduct()"></ion-icon>
         </ion-fab-button>
@@ -134,7 +134,7 @@
       <h5>
         Total: {{billTotal.toFixed(2)}} {{currency}}
       </h5>
-      <ion-button color="primary" (click)="save()">
+      <ion-button shape="round" color="primary" (click)="save()">
         {{isAddMode ? 'Save' : 'Edit'}}
       </ion-button>
     </section>
