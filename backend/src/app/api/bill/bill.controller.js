@@ -142,6 +142,7 @@ module.exports.addBill = async (request, response) => {
 module.exports.updateBill = async (request, response) => {
   const { products } = request.body;
   let newData = request.body;
+  delete newData.products;
   if (products) {
     // eslint-disable-next-line no-restricted-syntax
     for (const product of products) {
@@ -157,7 +158,12 @@ module.exports.updateBill = async (request, response) => {
         (product) =>
           product._id
             ? Product.findByIdAndUpdate(product._id, product)
-            : Product.create({ ...product, bill: request.params.id })
+            : Product.create({
+                name: product.name,
+                quantity: product.quantity,
+                price: product.price,
+                bill: request.params.id
+              })
       )
     );
     await Product.deleteMany({
@@ -169,9 +175,8 @@ module.exports.updateBill = async (request, response) => {
 
   const bill = await Bill.findByIdAndUpdate(request.params.id, newData, {
     new: true
-  })
-    .populate('products')
-    .exec();
+  }).populate('products');
+
   response.json(bill);
 };
 

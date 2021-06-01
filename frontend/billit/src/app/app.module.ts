@@ -10,6 +10,8 @@ import { AuthService } from './shared/services/auth.service';
 import { LocalStorageService } from './shared/services/local-storage.service';
 import { RequestInterceptor } from './shared/services/request-interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { BillsService } from './shared/services/bills.service';
+import { SharedService } from './shared/services/shared.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +28,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
       multi: true
     },
     AuthService,
+    BillsService,
+    SharedService,
     LocalStorageService
   ],
   bootstrap: [AppComponent],

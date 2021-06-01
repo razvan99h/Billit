@@ -37,4 +37,26 @@ export class BillsService {
           return;
         }));
   }
+
+  editBill(bill: Bill): Observable<void> {
+    console.log('editBill <<< bill: ', bill);
+    return this.httpClient
+      .put<Array<Bill>>(this.url + bill._id, bill)
+      .pipe(
+        map(response => {
+          console.log('editBill >>> response:', response);
+          return;
+        }));
+  }
+
+  deleteBill(bill: Bill): Observable<void> {
+    console.log('deleteBill <<< bill: ', bill);
+    return this.httpClient
+      .delete<Array<Bill>>(this.url + bill._id)
+      .pipe(
+        map(response => {
+          console.log('deleteBill >>> response:', response);
+          return;
+        }));
+  }
 }

@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon class="billit-header-icon" slot="start" name="arrow-back" (click)="goBack()">
+    </ion-icon>
+    <div class="billit-app-bar">
+      <img alt="logo" class="billit-toolbar-logo" src="assets/img/icon-white.png">
+    </div>
+    <ion-icon class="billit-header-icon" slot="end" name="ellipsis-vertical" (click)="presentPopover($event)">
+    </ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main">
+  Bill: {{bill.store}}
+</ion-content>

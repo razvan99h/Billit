@@ -12,7 +12,7 @@ export class TabsPage {
   }
 
   checkFormActive(): boolean {
-    const formRoutes = ['/tabs/bills/add'];
+    const formRoutes = ['/tabs/bills/add', '/tabs/bills/edit'];
     return formRoutes.includes(this.router.url);
   }
 }

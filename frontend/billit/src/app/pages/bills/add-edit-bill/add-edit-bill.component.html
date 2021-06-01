@@ -86,7 +86,7 @@
                   <ion-item>
                     <ion-input type="number"
                                [(ngModel)]="product.quantity"
-                               (input)="computeBillTotal()">
+                               (ngModelChange)="computeBillTotal()">
                     </ion-input>
                   </ion-item>
                 </div>
@@ -135,7 +135,7 @@
         Total: {{billTotal.toFixed(2)}} {{currency}}
       </h5>
       <ion-button color="primary" (click)="save()">
-        Save
+        {{isAddMode ? 'Save' : 'Edit'}}
       </ion-button>
     </section>
 

@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { BillsPage } from './bills.page';
-import { AddBillComponent } from './add-bill/add-bill.component';
+import { AddEditBillComponent } from './add-edit-bill/add-edit-bill.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { BillDetailsComponent } from './bill-details/bill-details.component';
+import { DetailsPopoverComponent } from './bill-details/details-popover/details-popover.component';
 
 const routes: Routes = [
   {
@@ -14,12 +16,20 @@ const routes: Routes = [
   },
   {
     path: 'add',
-    component: AddBillComponent
+    component: AddEditBillComponent
+  },
+  {
+    path: 'edit',
+    component: AddEditBillComponent
+  },
+  {
+    path: 'details',
+    component: BillDetailsComponent
   }
 ];
 
 @NgModule({
-  declarations: [AddBillComponent],
+  declarations: [AddEditBillComponent, DetailsPopoverComponent, BillDetailsComponent],
   imports: [RouterModule.forChild(routes), IonicModule, FormsModule, CommonModule],
   exports: [RouterModule],
 })
