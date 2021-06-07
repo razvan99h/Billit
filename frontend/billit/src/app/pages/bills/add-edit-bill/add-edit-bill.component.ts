@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../../shared/models/product.model';
 import { BillsService } from '../../../shared/services/bills.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
-import { Bill } from '../../../shared/models/bill.model';
+import { Bill, BILL_TYPES } from '../../../shared/models/bill.model';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { SharedService } from '../../../shared/services/shared.service';
@@ -23,6 +23,7 @@ export class AddEditBillComponent implements OnInit {
   storeName: string;
   billNumber: string;
   billCurrency: string;
+  billCategory: string;
   products: Array<Product> = [];
   billTotal = 0;
   isAddMode = true;
@@ -43,7 +44,7 @@ export class AddEditBillComponent implements OnInit {
 
     if (this.router.url === '/tabs/bills/add') {
       this.id = null;
-      this.products.push(new Product(null, null, null, null));
+      this.products.push(new Product(null, null, null, null, null));
       this.date = this.time = new Date().toISOString();
       this.billCurrency = this.userCurrency;
     } else {
@@ -57,6 +58,7 @@ export class AddEditBillComponent implements OnInit {
           this.storeName = bill.store;
           this.billNumber = bill.number;
           this.billCurrency = bill.currency;
+          this.billCategory = bill.category;
           this.products = bill.products;
           this.billTotal = bill.total;
         });
@@ -95,7 +97,7 @@ export class AddEditBillComponent implements OnInit {
   }
 
   addProduct() {
-    this.products.push(new Product(null, null, null, null));
+    this.products.push(new Product(null, null, null, null, null));
   }
 
   computeBillTotal() {
@@ -108,7 +110,16 @@ export class AddEditBillComponent implements OnInit {
     const time = new Date(this.time);
     date.setHours(time.getHours());
     date.setMinutes(time.getMinutes());
-    const bill = new Bill(this.id, this.storeName, this.billNumber, this.billCurrency, date, this.billTotal, this.products);
+    const bill = new Bill(
+      this.id,
+      this.storeName,
+      this.billNumber,
+      this.billCurrency,
+      date,
+      BILL_TYPES.NORMAL,
+      this.billCategory,
+      this.billTotal,
+      this.products);
 
     if (this.isAddMode) {
       this.billsService.addBill(bill).subscribe(

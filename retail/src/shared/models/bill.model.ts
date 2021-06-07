@@ -20,12 +20,12 @@ export class Bill {
 
     toJSON(): string {
         // override of JSON.stringify
-        const json = {
+        const obj = {
             s: this.store,
             n: this.number,
             p: this.products,
         };
-        return JSON.stringify(json);
+        return JSON.stringify(obj);
     }
 
     computeTotal(): string {

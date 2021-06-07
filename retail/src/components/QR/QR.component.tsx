@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useStylesQR } from './QR.styles';
 import Card from '@material-ui/core/Card';
-import { Button, Divider, IconButton, TextField } from '@material-ui/core';
-import { AddCircleOutline, RemoveCircleOutline } from '@material-ui/icons';
+import { Button, Divider, IconButton, InputAdornment, TextField } from '@material-ui/core';
+import { AddCircleOutline, Close, RemoveCircleOutline } from '@material-ui/icons';
 import { QRProps } from './QR.props';
 import { Bill } from '../../shared/models/bill.model';
 import { Product } from '../../shared/models/product.model';
@@ -10,6 +10,7 @@ import { Product } from '../../shared/models/product.model';
 function QRComponent(props: QRProps) {
     const styles = useStylesQR();
     let QRCode = require('qrcode.react');
+    let barcodeInput = useRef(null);
     const [quantity, setQuantity] = React.useState<number>(1);
     const [barcode, setBarcode] = React.useState<string>('');
     const [isValidBarcode, setIsValidBarcode] = React.useState<boolean>(true);
@@ -20,16 +21,26 @@ function QRComponent(props: QRProps) {
         setQuantity(1);
         setBarcode('');
         setIsValidBarcode(true);
+        if (barcodeInput.current) {
+            // @ts-ignore
+            barcodeInput.current.focus();
+        }
     }, [props.initializeObserver])
 
-    function decreaseQuantity() {
-        console.log('Decreasing current product quantity');
-        setQuantity(Math.max(1, quantity - 1));
+    function preventButtonFocus(e: any) {
+        e.preventDefault();
     }
 
-    function increaseQuantity() {
+    function decreaseQuantity(e: any) {
+        console.log('Decreasing current product quantity');
+        setQuantity(Math.max(1, quantity - 1));
+        e.preventDefault();
+    }
+
+    function increaseQuantity(e: any) {
         console.log('Increasing current product quantity');
         setQuantity(Math.min(Bill.maxQuantity, quantity + 1));
+        e.preventDefault();
     }
 
     function handleQuantityChange(event: any) {
@@ -40,10 +51,28 @@ function QRComponent(props: QRProps) {
     function handleBarcodeChange(event: any) {
         console.log('Current product barcode changed');
         setBarcode(event.target.value);
+        setIsValidBarcode(true);
+    }
+
+    function handleEnter(event: any) {
+        if (event.key === 'Enter') {
+            console.log('Product entered');
+            addProduct();
+        }
+    }
+
+    function clearBarcode() {
+        setBarcode('');
+        setIsValidBarcode(true);
     }
 
     function validateQuantity(): boolean {
         // console.log('Checking current product quantity validity');
+        try {
+            parseFloat(quantity.toString());
+        } catch (e) {
+            return false;
+        }
         return quantity > 0 && quantity < Bill.maxQuantity;
     }
 
@@ -58,7 +87,13 @@ function QRComponent(props: QRProps) {
         const isValidQuantity = validateQuantity();
         const productToAdd = findProductByBarcode();
         if (isValidQuantity && isValidBarcode && productToAdd) {
-            props.addProductCallback(new Product(productToAdd.barcode, productToAdd.name, productToAdd.price, quantity));
+            props.addProductCallback(new Product(
+                productToAdd.barcode,
+                productToAdd.name,
+                productToAdd.price,
+                productToAdd.category,
+                parseFloat(quantity.toString()))
+            );
             setBarcode('');
             setQuantity(1);
             setIsValidBarcode(true);
@@ -82,22 +117,45 @@ function QRComponent(props: QRProps) {
                                    onChange={handleQuantityChange}
                                    className={styles.topInput}>`</TextField>
                         <div>
-                            <IconButton aria-label="decrease" onClick={decreaseQuantity}>
+                            <IconButton aria-label="decrease"
+                                        onMouseDown={preventButtonFocus}
+                                        onClick={decreaseQuantity}>
                                 <RemoveCircleOutline fontSize="large"/>
                             </IconButton>
-                            <IconButton aria-label="increase" onClick={increaseQuantity}>
+                            <IconButton aria-label="increase"
+                                        onMouseDown={preventButtonFocus}
+                                        onClick={increaseQuantity}>
                                 <AddCircleOutline fontSize="large"/>
                             </IconButton>
                         </div>
                     </div>
                     <div className={styles.topBarcodeRow}>
-                        <TextField id="barcode" type="number" aria-valuemin={0} label="Barcode" variant="outlined"
+                        <TextField id="barcode-input" variant="outlined" label="Barcode"
+                                   autoFocus
+                                   inputRef={barcodeInput}
                                    value={barcode}
                                    error={!isValidBarcode}
                                    onChange={handleBarcodeChange}
-                                   className={styles.topInput}/>
+                                   onKeyPress={handleEnter}
+                                   className={styles.topInput}
+                                   InputProps={
+                                       barcode !== ''
+                                           ? {
+                                               endAdornment: <InputAdornment position="end">
+                                                   <IconButton
+                                                       onMouseDown={preventButtonFocus}
+                                                       onClick={clearBarcode}>
+                                                       <Close/>
+                                                   </IconButton>
+                                               </InputAdornment>,
+                                           }
+                                           : {}
+                                   }
+                        />
                         <div>
-                            <Button variant="contained" size="large" color="primary" className={styles.topAddButton}
+                            <Button variant="contained" size="large" color="primary"
+                                    className={styles.topAddButton}
+                                    onMouseDown={preventButtonFocus}
                                     onClick={addProduct}>
                                 Add
                             </Button>

@@ -14,7 +14,9 @@
   <main class="billit-details-container">
     <ion-card class="billit-details-card">
       <ion-card-content class="billit-details-card-content">
-        <section class="billit-details-top">
+
+        <section class="billit-details-top"
+                 [style.margin-bottom]="billCategories.length > 0 ? '0.1em !important' : '0.5em !important'">
           <div class="d-flex justify-content-between">
             <div class="billit-details-top-element mr-2">
               <ion-icon name="calendar-outline"></ion-icon>
@@ -28,7 +30,9 @@
           </div>
 
           <div class="billit-details-top-element">
-            <ion-icon name="cart"></ion-icon>
+            <ion-icon name="cart"
+                      class="billit-details-store-icon"
+                      [ngStyle]="bill.type === TRUSTED_TYPE && {'color': 'var(--billit-trusted-color)'}"></ion-icon>
             <div class="billit-details-store-name">
               {{bill.store}}
             </div>
@@ -40,6 +44,19 @@
               {{bill.number}}
             </div>
           </div>
+
+          <div class="billit-details-categories-wrapper"
+               *ngIf="billCategories.length > 0">
+            <div class="billit-details-categories-shadow"></div>
+            <div class="billit-details-categories">
+              <div class="billit-details-category"
+                   *ngFor="let category of billCategories">
+                {{category}}
+              </div>
+              <div class="pr-2"></div>
+            </div>
+          </div>
+
         </section>
 
         <div class="billit-divider"></div>

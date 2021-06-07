@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { NavParams, PopoverController } from '@ionic/angular';
 import { DetailsPopoverAction } from '../../../../shared/models/enums/details-popover.action';
+import { Bill, BILL_TYPES } from '../../../../shared/models/bill.model';
 
 @Component({
   selector: 'app-details-popover',
@@ -8,10 +9,14 @@ import { DetailsPopoverAction } from '../../../../shared/models/enums/details-po
   styleUrls: ['./details-popover.component.scss'],
 })
 export class DetailsPopoverComponent implements OnInit {
+  TRUSTED_TYPE = BILL_TYPES.TRUSTED;
+  bill: Bill;
 
   constructor(
     private popoverController: PopoverController,
+    navParams: NavParams,
   ) {
+    this.bill = navParams.get('bill');
   }
 
   ngOnInit() {

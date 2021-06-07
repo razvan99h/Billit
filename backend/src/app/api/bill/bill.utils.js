@@ -1,3 +1,8 @@
+module.exports.BILL_TYPES = {
+  TRUSTED: 'trusted',
+  NORMAL: 'normal'
+};
+
 module.exports.toPlainBillObject = (bill) => {
   const billObject = bill.toObject({ getter: true });
   return {

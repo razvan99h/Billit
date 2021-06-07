@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BillsService } from '../../shared/services/bills.service';
-import { Bill } from '../../shared/models/bill.model';
+import { Bill, BILL_TYPES } from '../../shared/models/bill.model';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../../shared/services/shared.service';
@@ -13,6 +13,7 @@ import { UpdateBillsAction } from '../../shared/models/enums/update-bills.action
   styleUrls: ['./bills.page.scss'],
 })
 export class BillsPage implements OnInit, OnDestroy {
+  TRUSTED_TYPE = BILL_TYPES.TRUSTED;
   bills: Array<Bill>;
   currency: string;
   subscription: Subscription;
@@ -44,7 +45,8 @@ export class BillsPage implements OnInit, OnDestroy {
           this.bills.splice(index, 0, bill);
         }
         else if (action === UpdateBillsAction.EDIT) {
-          this.bills.push(bill); // edited bill
+          const index = this.bills.findIndex(b => b._id === bill._id);
+          this.bills[index] = bill; // edited bill
           this.bills.sort((a, b) => b.date.getTime() - a.date.getTime());
         }
         else if (action === UpdateBillsAction.DELETE) {

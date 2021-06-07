@@ -1,6 +1,7 @@
 const Bill = require('./bill.model');
 const Product = require('./product.model');
 const User = require('./../user/user.model');
+const { BILL_TYPES } = require('./bill.utils');
 const { toPlainBillObject } = require('./bill.utils');
 
 /**
@@ -46,6 +47,18 @@ module.exports.validateBillFields = async (request, response, next) => {
     message = 'Bill date invalid';
   }
   if (
+    bill.type !== undefined &&
+    !Object.values(BILL_TYPES).includes(bill.type)
+  ) {
+    message = 'Bill type invalid';
+  }
+  if (bill.category !== undefined && typeof bill.category !== 'string') {
+    message = 'Bill category should be a string';
+  }
+  if (bill.category && bill.type === BILL_TYPES.TRUSTED) {
+    message = 'Cannot set category on a trusted bill';
+  }
+  if (
     bill.products !== undefined &&
     !(bill.products instanceof Array && bill.products.length > 0)
   ) {
@@ -61,6 +74,14 @@ module.exports.validateBillFields = async (request, response, next) => {
       }
       if (typeof product.quantity !== 'number') {
         message = 'Product quantities should be numbers';
+      }
+      if (bill.category && product.category) {
+        message =
+          'Cannot set both bill category and individual product categories';
+      }
+      if (product.category && bill.type !== BILL_TYPES.TRUSTED) {
+        message =
+          'Cannot set individual product categories on non-trusted bills';
       }
     });
   }
@@ -113,7 +134,15 @@ module.exports.billDetails = async (request, response) => {
  */
 module.exports.addBill = async (request, response) => {
   const owner = await User.findById(request.principal);
-  const { store, number, currency, date, products } = request.body;
+  const {
+    store,
+    number,
+    currency,
+    date,
+    type,
+    category,
+    products
+  } = request.body;
   if (!(store && number && currency && products)) {
     response.status(400);
     response.send('Missing bill fields');
@@ -125,7 +154,9 @@ module.exports.addBill = async (request, response) => {
     store,
     number,
     currency,
-    date: date || new Date()
+    date: date || new Date(),
+    type: type || BILL_TYPES.NORMAL,
+    category: category || null
   });
 
   const productEntities = await Promise.all(
@@ -134,7 +165,8 @@ module.exports.addBill = async (request, response) => {
         bill,
         name: product.name,
         quantity: product.quantity,
-        price: product.price
+        price: product.price,
+        category: product.category ? product.category.toLowerCase() : null
       })
     )
   );
@@ -158,8 +190,16 @@ module.exports.addBill = async (request, response) => {
  * @return {object} 400 - Invalid entity fields
  * @return {object} 403 - Resource not owned
  * @return {object} 404 - Bill or product does not exist
+ * @return {object} 405 - Cannot update trusted bills
  */
 module.exports.updateBill = async (request, response) => {
+  const bill = await Bill.findById(request.params.id);
+  if (bill.type === BILL_TYPES.TRUSTED) {
+    response.status(405);
+    response.send('Cannot update trusted bills');
+    return;
+  }
+
   const { products } = request.body;
   let newData = request.body;
   delete newData.products;
@@ -179,11 +219,11 @@ module.exports.updateBill = async (request, response) => {
           product._id
             ? Product.findByIdAndUpdate(product._id, product)
             : Product.create({
-              name: product.name,
-              quantity: product.quantity,
-              price: product.price,
-              bill: request.params.id
-            })
+                name: product.name,
+                quantity: product.quantity,
+                price: product.price,
+                bill: request.params.id
+              })
       )
     );
     await Product.deleteMany({
@@ -193,11 +233,11 @@ module.exports.updateBill = async (request, response) => {
     newData = { ...newData, products: productEntities };
   }
 
-  const bill = await Bill.findByIdAndUpdate(request.params.id, newData, {
+  const updatedBill = await Bill.findByIdAndUpdate(request.params.id, newData, {
     new: true
   }).populate('products');
 
-  response.json(toPlainBillObject(bill));
+  response.json(toPlainBillObject(updatedBill));
 };
 
 /**

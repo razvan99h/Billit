@@ -5,22 +5,38 @@
     {
       "barcode": "1111",
       "name": "Product 1",
-      "price": 10
+      "price": 10,
+      "category": "category 1"
     },
     {
       "barcode": "2222",
       "name": "Product 2",
-      "price": 0.2
+      "price": 0.2,
+      "category": "category 3"
     },
     {
       "barcode": "3333",
       "name": "Product 3",
-      "price": 32.23
+      "price": 32.23,
+      "category": "category 3"
     },
     {
       "barcode": "4444",
       "name": "Product 4",
-      "price": 44.4
+      "price": 44.4,
+      "category": "category 4"
+    },
+    {
+      "barcode": "5948643004687",
+      "name": "JOE Napolitane Ciocolata",
+      "price": 5.2,
+      "category": "sweets"
+    },
+    {
+      "barcode": "5449000033239",
+      "name": "Apa minerala Poiana Negri",
+      "price": 2.4,
+      "category": "beverages"
     }
   ]
 }

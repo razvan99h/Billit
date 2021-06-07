@@ -21,11 +21,15 @@ function BillComponent(props: BillProps) {
     useEffect(() => {
         scrollToBottom();
         const timer = setInterval(() => {
-            console.log("Updating bill date");
+            console.log('Updating bill date');
             setDate(new Date());
         }, 5000);
         return () => clearInterval(timer);
     }, [props.scrollToBottomObserver])
+
+    function preventButtonFocus(e: any) {
+        e.preventDefault();
+    }
 
     function getDateString(): string {
         const dateOptions: Intl.DateTimeFormatOptions = {
@@ -45,7 +49,7 @@ function BillComponent(props: BillProps) {
     }
 
     function scrollToBottom() {
-        console.log("Scrolling to bottom of bill");
+        console.log('Scrolling to bottom of bill');
         // @ts-ignore
         scrollableBottomRef.current.scrollIntoView({behavior: 'smooth'});
     }
@@ -98,10 +102,12 @@ function BillComponent(props: BillProps) {
                                         </div>
                                         <div className={styles.middleRowActions}>
                                             <IconButton aria-label="decrease" className={styles.middleRowButton}
+                                                        onMouseDown={preventButtonFocus}
                                                         onClick={() => props.decreaseQuantityCallback(product.barcode.toString())}>
                                                 <RemoveCircleOutline className={styles.middleRowIcon}/>
                                             </IconButton>
                                             <IconButton aria-label="increase" className={styles.middleRowButton}
+                                                        onMouseDown={preventButtonFocus}
                                                         onClick={() => props.increaseQuantityCallback(product.barcode.toString())}>
                                                 <AddCircleOutline className={styles.middleRowIcon}/>
                                             </IconButton>
@@ -115,6 +121,7 @@ function BillComponent(props: BillProps) {
                                         </div>
                                         <div className={styles.middleRowActions}>
                                             <IconButton aria-label="delete" className={styles.middleRowButton}
+                                                        onMouseDown={preventButtonFocus}
                                                         onClick={() => props.removeProductCallback(product.barcode)}>
                                                 <DeleteOutline
                                                     className={`${styles.middleRowIcon} ${styles.middleRowDeleteIcon}`}/>

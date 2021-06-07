@@ -21,11 +21,11 @@
     text-align: center;
   }
 
-  .billit-add-datetime-row {
+  .billit-add-double-row {
     display: flex;
   }
 
-  .billit-add-date, .billit-add-time, .billit-add-row {
+  .billit-add-left, .billit-add-right, .billit-add-row {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,13 +58,17 @@
     }
   }
 
-  .billit-add-date {
-    flex: 3;
+  .billit-add-left {
+    flex: 1;
 
   }
 
-  .billit-add-time {
-    flex: 2;
+  .billit-add-right {
+    width: 9em;
+
+    ion-icon {
+      font-size: 2.5em;
+    }
   }
 
   ion-datetime, ion-label {

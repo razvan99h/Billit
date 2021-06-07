@@ -47,7 +47,8 @@
       <ion-card-title>
         <div class="billit-card-row">
           <div class="billit-bottom-row-element">
-            <ion-icon name="cart"></ion-icon>
+            <ion-icon name="cart"
+                      [ngStyle]="bill.type === TRUSTED_TYPE && {'color': 'var(--billit-trusted-color)'}"></ion-icon>
             <div class="billit-store-name">
               {{bill.store}}
             </div>

@@ -21,14 +21,14 @@
 
       <ion-card>
         <ion-card-content class="billit-add-info-card">
-          <div class="billit-add-datetime-row">
-            <div class="billit-add-date">
+          <div class="billit-add-double-row">
+            <div class="billit-add-left">
               <ion-icon name="calendar-outline"></ion-icon>
               <ion-item>
                 <ion-datetime displayFormat="DD MMM YY" placeholder="Date" [(ngModel)]="date"></ion-datetime>
               </ion-item>
             </div>
-            <div class="billit-add-time">
+            <div class="billit-add-right">
               <ion-icon name="time-outline"></ion-icon>
               <ion-item>
                 <ion-datetime displayFormat="HH:mm" placeholder="Time" [(ngModel)]="time"></ion-datetime>
@@ -45,24 +45,33 @@
           </div>
 
           <div class="billit-add-row">
-            <ion-icon name="finger-print-outline"></ion-icon>
-            <ion-item class="billit-add-floating-input" >
-              <ion-label position="floating">Bill number</ion-label>
-              <ion-input [(ngModel)]="billNumber"></ion-input>
+            <ion-icon name="shapes-outline"></ion-icon>
+            <ion-item class="billit-add-floating-input">
+              <ion-label position="floating">Category</ion-label>
+              <ion-input [(ngModel)]="billCategory"></ion-input>
             </ion-item>
           </div>
 
-          <div class="billit-add-row">
-            <ion-icon name="cash-outline"></ion-icon>
-            <ion-item>
-              <ion-label>Currency</ion-label>
-              <ion-select [value]="currencies" [(ngModel)]="billCurrency">
-                <ion-select-option *ngFor="let currency of currencies"
-                                   value="{{currency}}">
-                  {{currency}}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
+          <div class="billit-add-double-row">
+            <div class="billit-add-left">
+              <ion-icon name="finger-print-outline"></ion-icon>
+              <ion-item class="billit-add-floating-input">
+                <ion-label position="floating">Bill number</ion-label>
+                <ion-input [(ngModel)]="billNumber"></ion-input>
+              </ion-item>
+            </div>
+
+            <div class="billit-add-right">
+              <ion-icon name="cash-outline"></ion-icon>
+              <ion-item>
+                <ion-select [value]="currencies" [(ngModel)]="billCurrency">
+                  <ion-select-option *ngFor="let currency of currencies"
+                                     value="{{currency}}">
+                    {{currency}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
           </div>
 
         </ion-card-content>

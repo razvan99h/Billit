@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../../../shared/services/shared.service';
-import { Bill } from '../../../shared/models/bill.model';
+import { Bill, BILL_TYPES } from '../../../shared/models/bill.model';
 import { AlertController, PopoverController, ToastController } from '@ionic/angular';
 import { DetailsPopoverComponent } from './details-popover/details-popover.component';
 import { DetailsPopoverAction } from '../../../shared/models/enums/details-popover.action';
@@ -17,9 +17,11 @@ import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.act
   styleUrls: ['./bill-details.component.scss'],
 })
 export class BillDetailsComponent implements OnInit, OnDestroy {
-  bill: Bill = new Bill(null, null, null, null, null, null, []);
+  TRUSTED_TYPE = BILL_TYPES.TRUSTED;
+  bill: Bill = new Bill(null, null, null, null, null, null, null, null, []);
   currency: string;
   subscription: Subscription;
+  billCategories = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +42,7 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
       .getBillInfo()
       .subscribe(bill => {
         this.bill = bill;
+        this.billCategories = bill.getCategories();
       });
   }
 
@@ -75,6 +78,7 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: DetailsPopoverComponent,
+      componentProps: {bill: this.bill},
       event: ev,
       cssClass: 'billit-details-popover',
       showBackdrop: false,
@@ -95,7 +99,7 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
         async () => {
           this.goBack();
           this.sharedService.sendBillInfoUpdateList([
-            new Bill(this.bill._id, null, null, null, null, null, null),
+            new Bill(this.bill._id, null, null, null, null, null, null, null, null),
             UpdateBillsAction.DELETE
           ]);
           await this.presentSuccessToast();

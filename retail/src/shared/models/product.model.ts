@@ -3,16 +3,18 @@ export class Product {
     name: string;
     price: number;
     quantity: number;
+    category: string;
 
-    constructor(barcode: string, name: string, price: number, quantity: number = 1) {
+    constructor(barcode: string, name: string, price: number, category: string, quantity: number = 1) {
         this.barcode = barcode;
         this.name = name;
         this.price = price;
+        this.category = category;
         this.quantity = quantity;
     }
 
     static fromDatabaseJSON(json: any) {
-        return new Product(json['barcode'], json['name'], json['price']);
+        return new Product(json['barcode'], json['name'], json['price'], json['category']);
     }
 
     toJSON(): string {
@@ -20,7 +22,8 @@ export class Product {
         const json = {
             n: this.name,
             p: this.price,
-            q: this.quantity
+            q: this.quantity,
+            c: this.category,
         };
         return JSON.stringify(json);
     }

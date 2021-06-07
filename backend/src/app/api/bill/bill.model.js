@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { BILL_TYPES } = require('./bill.utils');
 
 const BillSchema = new mongoose.Schema(
   {
@@ -9,6 +10,11 @@ const BillSchema = new mongoose.Schema(
     store: String,
     number: String,
     date: Date,
+    type: {
+      type: String,
+      default: BILL_TYPES.NORMAL
+    },
+    category: String,
     products: [
       {
         type: mongoose.Schema.Types.ObjectId,
