@@ -1,0 +1,26 @@
+{
+  "storeName": "Trusted Store S.R.L.",
+  "currency": "RON",
+  "products": [
+    {
+      "barcode": "1111",
+      "name": "Product 1",
+      "price": 10
+    },
+    {
+      "barcode": "2222",
+      "name": "Product 2",
+      "price": 0.2
+    },
+    {
+      "barcode": "3333",
+      "name": "Product 3",
+      "price": 32.23
+    },
+    {
+      "barcode": "4444",
+      "name": "Product 4",
+      "price": 44.4
+    }
+  ]
+}

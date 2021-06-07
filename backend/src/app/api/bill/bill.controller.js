@@ -45,8 +45,11 @@ module.exports.validateBillFields = async (request, response, next) => {
   if (bill.date !== undefined && !Date.parse(bill.date)) {
     message = 'Bill date invalid';
   }
-  if (bill.products !== undefined && !(bill.products instanceof Array)) {
-    message = 'Bill products should be an array';
+  if (
+    bill.products !== undefined &&
+    !(bill.products instanceof Array && bill.products.length > 0)
+  ) {
+    message = 'Bill products should be a non-empty array';
   }
   if (bill.products) {
     bill.products.forEach((product) => {
@@ -111,13 +114,19 @@ module.exports.billDetails = async (request, response) => {
 module.exports.addBill = async (request, response) => {
   const owner = await User.findById(request.principal);
   const { store, number, currency, date, products } = request.body;
-  if (!(store && number && currency && date && products)) {
+  if (!(store && number && currency && products)) {
     response.status(400);
     response.send('Missing bill fields');
     return;
   }
 
-  let bill = await Bill.create({ owner, store, number, currency, date });
+  let bill = await Bill.create({
+    owner,
+    store,
+    number,
+    currency,
+    date: date || new Date()
+  });
 
   const productEntities = await Promise.all(
     products.map((product) =>
@@ -170,11 +179,11 @@ module.exports.updateBill = async (request, response) => {
           product._id
             ? Product.findByIdAndUpdate(product._id, product)
             : Product.create({
-                name: product.name,
-                quantity: product.quantity,
-                price: product.price,
-                bill: request.params.id
-              })
+              name: product.name,
+              quantity: product.quantity,
+              price: product.price,
+              bill: request.params.id
+            })
       )
     );
     await Product.deleteMany({
