@@ -14,7 +14,7 @@ function QRComponent(props: QRProps) {
     const [quantity, setQuantity] = React.useState<number>(1);
     const [barcode, setBarcode] = React.useState<string>('');
     const [isValidBarcode, setIsValidBarcode] = React.useState<boolean>(true);
-
+    const [billJSON, setBillJSON] = React.useState<string>('');
 
     useEffect(() => {
         console.log('Initializing QR component')
@@ -97,6 +97,7 @@ function QRComponent(props: QRProps) {
             setBarcode('');
             setQuantity(1);
             setIsValidBarcode(true);
+            setBillJSON(props.bill.toJSON());
         }
     }
 
@@ -170,7 +171,7 @@ function QRComponent(props: QRProps) {
                 <div className={styles.QRCodeContainer}>
                     {
                         props.bill.products.length > 0 &&
-                        <QRCode size={1000} value={props.bill.toJSON()} className={styles.QRCode}/>
+                        <QRCode size={1000} value={billJSON} className={styles.QRCode}/>
                     }
                 </div>
 

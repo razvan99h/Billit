@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Statistics } from '../models/statistics.model';
 import { StatisticsRequest } from '../models/api/statistics-api.models';
+import { API_URL } from './constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticsService {
-  private url = environment.API_URL + 'statistics/';
+  private url = API_URL + 'statistics/';
 
   constructor(
     private httpClient: HttpClient,

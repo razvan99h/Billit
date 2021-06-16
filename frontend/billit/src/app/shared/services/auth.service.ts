@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { map } from 'rxjs/operators';
 import { CheckLoginRequest, LoginRequest, LoginResponse, RegisterRequest } from '../models/api/auth-api.models';
+import { API_URL } from './constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private url = environment.API_URL + 'auth/';
+  private url = API_URL + 'auth/';
 
   constructor(
     private httpClient: HttpClient,

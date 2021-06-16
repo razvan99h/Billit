@@ -24,6 +24,8 @@ export class Bill {
             s: this.store,
             n: this.number,
             p: this.products,
+            c: this.currency,
+            d: new Date(),
         };
         return JSON.stringify(obj);
     }

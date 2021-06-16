@@ -18,6 +18,10 @@ export class Product {
     return new Product(json._id, json.name, json.price, json.quantity, json.category);
   }
 
+  static fromBarcodeJSON(json: any): Product {
+    return new Product(null, json.n, json.p, json.q, json.c);
+  }
+
   static empty(): Product {
     return new Product(null, null, null, null, null);
   }

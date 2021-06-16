@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { BillsPageRoutingModule } from './bills-routing.module';
 
 import { BillsPage } from './bills.page';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +16,9 @@ import { BillsPage } from './bills.page';
     IonicModule,
     BillsPageRoutingModule
   ],
-  declarations: [BillsPage]
+  declarations: [BillsPage],
+  providers: [
+    BarcodeScanner,
+  ]
 })
 export class BillsPageModule {}

@@ -48,6 +48,12 @@ export class Bill {
     return new Bill(json._id, json.store, json.number, json.currency, date, json.type, json.category, json.favorite, json.total, products);
   }
 
+  static fromBarcodeJSON(json: any): Bill {
+    const date = new Date(json.d);
+    const products = json.p.map(productString => Product.fromBarcodeJSON(JSON.parse(productString)));
+    return new Bill(null, json.s, json.n, json.c, date, BILL_TYPES.TRUSTED, null, false, null, products);
+  }
+
   static emptyBill(): Bill {
     return new Bill(null, null, null, null, null, null, null, null, null, []);
   }

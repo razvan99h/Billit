@@ -9,6 +9,7 @@ import { UpdateBillsAction } from '../../shared/models/enums/update-bills.action
 import { DialogService } from '../../shared/services/dialog.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { extendMoment } from 'moment-range';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 // @ts-ignore
 import Moment from 'moment';
@@ -34,6 +35,7 @@ export class BillsPage implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private dialogService: DialogService,
     private toastService: ToastService,
+    private barcodeScanner: BarcodeScanner,
   ) {
     this.buildIntervals();
 
@@ -108,6 +110,22 @@ export class BillsPage implements OnInit, OnDestroy {
   goToBillDetails(bill: Bill) {
     this.router.navigate(['./details'], {relativeTo: this.route});
     this.sharedService.sendBillInfo(bill);
+  }
+
+  openQRScanner() {
+    this.barcodeScanner.scan().then(barcodeData => {
+      const scannedBill = Bill.fromBarcodeJSON(JSON.parse(barcodeData.text));
+      this.billsService
+        .addBill(scannedBill)
+        .subscribe(async (newBill) => {
+            this.bills.splice(0, 0, newBill);
+            await this.toastService.presentSuccessToast('Bill successfully scanned!');
+          }, () => this.toastService.presentErrorToast('Could not add scanned bill!')
+        );
+    }).catch(async err => {
+      console.log('Error', err);
+      await this.toastService.presentErrorToast('Could not handle QR scanning!');
+    });
   }
 
   private computeIntervalsToShow() {

@@ -31,7 +31,7 @@ import { ChartsModule } from 'ng2-charts';
     AuthService,
     BillsService,
     SharedService,
-    LocalStorageService
+    LocalStorageService,
   ],
   bootstrap: [AppComponent],
 })
