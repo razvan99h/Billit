@@ -28,15 +28,75 @@
     },
     {
       "barcode": "5948643004687",
-      "name": "JOE Napolitane Ciocolata",
+      "name": "JOE Chocolate Wafers",
       "price": 5.2,
       "category": "sweets"
     },
     {
       "barcode": "5449000033239",
-      "name": "Apa minerala Poiana Negri",
+      "name": "Poiana Negri Mineral Water 1.5L",
       "price": 2.4,
       "category": "beverages"
+    },
+    {
+      "barcode": "5201911240164",
+      "name": "Fineti Cocoa & Hazelnut Spread",
+      "price": 7,
+      "category": "sweets"
+    },
+    {
+      "barcode": "5053990101580",
+      "name": "Pringles chips Salt & Vinegar",
+      "price": 9.8,
+      "category": "chips"
+    },
+    {
+      "barcode": "5941445675666",
+      "name": "Chio chips Intense - Sea Salt",
+      "price": 5.2,
+      "category": "chips"
+    },
+    {
+      "barcode": "4000417237002",
+      "name": "Ritter Sport chocolate - strawberries",
+      "price": 6.1,
+      "category": "sweets"
+    },
+    {
+      "barcode": "7614500010617",
+      "name": "Toblerone Dark Chocolate",
+      "price": 5.7,
+      "category": "sweets"
+    },
+    {
+      "barcode": "5948643004687",
+      "name": "choco",
+      "price": 10,
+      "category": "sweets"
+    },
+    {
+      "barcode": "5942219000059",
+      "name": "Borsec Mineral Water 1.5L",
+      "price": 2.7,
+      "category": "beverages"
+    },
+    {
+      "barcode": "5942070001639",
+      "name": "Bergenbier Beer 0% alcohol",
+      "price": 2.8,
+      "category": "alcohol"
+    },
+    {
+      "barcode": "5948990130602",
+      "name": "Floriol Oil 2L",
+      "price": 6.9,
+      "category": "oil"
+    },
+    {
+      "barcode": "8076808060654",
+      "name": "Barilla Farfale Pasta",
+      "price": 11.5,
+      "category": "pasta"
     }
   ]
 }

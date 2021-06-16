@@ -21,11 +21,12 @@ function QRComponent(props: QRProps) {
         setQuantity(1);
         setBarcode('');
         setIsValidBarcode(true);
+        setBillJSON(props.bill.toJSON());
         if (barcodeInput.current) {
             // @ts-ignore
             barcodeInput.current.focus();
         }
-    }, [props.initializeObserver])
+    }, [props.initializeObserver, props.bill])
 
     function preventButtonFocus(e: any) {
         e.preventDefault();
