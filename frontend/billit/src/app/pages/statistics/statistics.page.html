@@ -67,7 +67,7 @@
                *ngFor="let label of storesStatistics.labels; let i = index">
             <div class="billit-chart-legend-label">
               <div class="billit-chart-legend-color"
-                   [ngStyle]="{'background-color': i < 5 ? colors[i] : gray}"></div>
+                   [ngStyle]="{'background-color': i < 5 ? doughnutChartColors[0].backgroundColor[i] : gray}"></div>
               <div>{{label}}</div>
             </div>
             <div>{{storesStatistics.amounts[i]}} {{currency}}</div>
@@ -107,7 +107,7 @@
                *ngFor="let label of categoriesStatistics.labels; let i = index">
             <div class="billit-chart-legend-label">
               <div class="billit-chart-legend-color"
-                   [ngStyle]="{'background-color': i < 5 ? colors[i] : gray}"></div>
+                   [ngStyle]="{'background-color': i < 5 ? barChartColors[0].backgroundColor[i] : gray}"></div>
               <div>{{label}}</div>
             </div>
             <div>{{categoriesStatistics.amounts[i]}} {{currency}}</div>
