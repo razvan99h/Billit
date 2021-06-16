@@ -1,6 +1,6 @@
 const User = require('./user.model');
-const Bill = require('./../bill/bill.model');
-const Product = require('./../bill/product.model');
+const Bill = require('../bills/bill.model');
+const Product = require('../bills/product.model');
 
 /**
  * User entity

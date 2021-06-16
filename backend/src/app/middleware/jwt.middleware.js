@@ -1,5 +1,5 @@
 const { JWT_SECRET } = require('../../config');
-const User = require('../api/user/user.model');
+const User = require('../api/users/user.model');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 

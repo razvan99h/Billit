@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../../../shared/services/shared.service';
 import { Bill, BILL_TYPES } from '../../../shared/models/bill.model';
-import { AlertController, PopoverController, ToastController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
 import { DetailsPopoverComponent } from './details-popover/details-popover.component';
 import { DetailsPopoverAction } from '../../../shared/models/enums/details-popover.action';
 import { Subscription } from 'rxjs';
 import { BillsService } from '../../../shared/services/bills.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.action';
+import { ToastService } from '../../../shared/services/toast.service';
+import { DialogService } from '../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-bill-details',
@@ -18,7 +19,7 @@ import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.act
 })
 export class BillDetailsComponent implements OnInit, OnDestroy {
   TRUSTED_TYPE = BILL_TYPES.TRUSTED;
-  bill: Bill = new Bill(null, null, null, null, null, null, null, null, []);
+  bill: Bill = Bill.emptyBill();
   currency: string;
   subscription: Subscription;
   billCategories = [];
@@ -30,9 +31,8 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
     private localStorageService: LocalStorageService,
     private sharedService: SharedService,
     private popoverController: PopoverController,
-    private toastController: ToastController,
-    private location: Location,
-    private alertController: AlertController,
+    private toastService: ToastService,
+    private dialogService: DialogService,
   ) {
     this.currency = this.localStorageService.loginData.currency;
   }
@@ -48,31 +48,6 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-  }
-
-  goBack() {
-    this.router.navigate(['./..'], {relativeTo: this.route});
-  }
-
-  async presentDeleteDialog(): Promise<boolean> {
-    const alert = await this.alertController.create({
-      header: 'Confirm deleting bill',
-      message: 'Are you sure you want to delete this bill?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Confirm',
-          role: 'confirm',
-        }]
-    });
-
-    await alert.present();
-    const {role} = await alert.onDidDismiss();
-
-    return role === 'confirm';
   }
 
   async presentPopover(ev: any) {
@@ -91,7 +66,7 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
       this.router.navigate(['./../edit'], {relativeTo: this.route});
       this.sharedService.sendBillInfo(this.bill);
     } else if (data === DetailsPopoverAction.DELETE) {
-      const shouldDelete = await this.presentDeleteDialog();
+      const shouldDelete = await this.dialogService.presentDeleteDialog();
       if (!shouldDelete) {
         return;
       }
@@ -99,31 +74,28 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
         async () => {
           this.goBack();
           this.sharedService.sendBillInfoUpdateList([
-            new Bill(this.bill._id, null, null, null, null, null, null, null, null),
+            Bill.emptyBill(),
             UpdateBillsAction.DELETE
           ]);
-          await this.presentSuccessToast();
+          await this.toastService.presentSuccessToast('Bill successfully deleted!');
         },
-        () => this.presentErrorToast()
+        () => this.toastService.presentErrorToast('Could not delete bill!')
       );
     }
   }
 
-  private async presentSuccessToast() {
-    const toast = await this.toastController.create({
-      message: `Bill successfully deleted!`,
-      color: 'success',
-      duration: 2000
-    });
-    await toast.present();
+  async updateFavorite() {
+    this.billsService.updateFavorite(this.bill).subscribe(
+      async (favorite) => {
+        this.bill.favorite = favorite;
+        const message = favorite ? 'Bill added to favorites!' : 'Bill removed from favorites!';
+        await this.toastService.presentSuccessToast(message);
+      },
+      () => this.toastService.presentErrorToast('Could not update status!')
+    );
   }
 
-  private async presentErrorToast() {
-    const toast = await this.toastController.create({
-      message: `Could not delete bill!`,
-      color: 'danger',
-      duration: 2000
-    });
-    await toast.present();
+  goBack() {
+    this.router.navigate(['./..'], {relativeTo: this.route});
   }
 }

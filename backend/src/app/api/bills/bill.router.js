@@ -12,7 +12,8 @@ const {
   billDetails,
   addBill,
   updateBill,
-  removeBill
+  removeBill,
+  markBillFavorite
 } = require('./bill.controller');
 
 const router = express.Router();
@@ -42,6 +43,15 @@ router
     catchErrors(billExists),
     catchErrors(validateBillOwnership),
     catchErrors(removeBill)
+  );
+
+router
+  .route('/favorite/:id')
+  .put(
+    catchErrors(validateId),
+    catchErrors(billExists),
+    catchErrors(validateBillOwnership),
+    catchErrors(markBillFavorite)
   );
 
 module.exports = router;

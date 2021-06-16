@@ -4,12 +4,13 @@ import { Product } from '../../../shared/models/product.model';
 import { BillsService } from '../../../shared/services/bills.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { Bill, BILL_TYPES } from '../../../shared/models/bill.model';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { SharedService } from '../../../shared/services/shared.service';
 import { take } from 'rxjs/operators';
 import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.action';
 import { CURRENCIES } from '../../../shared/services/constants';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-add-bill',
@@ -36,7 +37,7 @@ export class AddEditBillComponent implements OnInit {
     private billsService: BillsService,
     private localStorageService: LocalStorageService,
     private sharedService: SharedService,
-    private toastController: ToastController,
+    private toastService: ToastService,
     private location: Location,
     private alertController: AlertController,
   ) {
@@ -44,7 +45,7 @@ export class AddEditBillComponent implements OnInit {
 
     if (this.router.url === '/tabs/bills/add') {
       this.id = null;
-      this.products.push(new Product(null, null, null, null, null));
+      this.products.push(Product.empty());
       this.date = this.time = new Date().toISOString();
       this.billCurrency = this.userCurrency;
     } else {
@@ -66,6 +67,46 @@ export class AddEditBillComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  save() {
+    // TODO: validate inputs
+    const date = new Date(this.date);
+    const time = new Date(this.time);
+    date.setHours(time.getHours());
+    date.setMinutes(time.getMinutes());
+    const bill = new Bill(
+      this.id,
+      this.storeName,
+      this.billNumber,
+      this.billCurrency,
+      date,
+      BILL_TYPES.NORMAL,
+      this.billCategory,
+      false,
+      this.billTotal,
+      this.products);
+
+    if (this.isAddMode) {
+      this.billsService.addBill(bill).subscribe(
+        async (newBill) => {
+          this.location.back();
+          this.sharedService.sendBillInfoUpdateList([newBill, UpdateBillsAction.ADD]);
+          await this.toastService.presentSuccessToast('Bill successfully added!');
+        },
+        () => this.toastService.presentErrorToast('Could not add bill!')
+      );
+    } else {
+      this.billsService.editBill(bill).subscribe(
+        async (editedBill) => {
+          this.location.back();
+          this.sharedService.sendBillInfo(editedBill);
+          this.sharedService.sendBillInfoUpdateList([editedBill, UpdateBillsAction.EDIT]);
+          await this.toastService.presentSuccessToast('Bill successfully edited!');
+        },
+        () => this.toastService.presentErrorToast('Could not edit bill!')
+      );
+    }
   }
 
   async goBack() {
@@ -97,67 +138,10 @@ export class AddEditBillComponent implements OnInit {
   }
 
   addProduct() {
-    this.products.push(new Product(null, null, null, null, null));
+    this.products.push(Product.empty());
   }
 
   computeBillTotal() {
     this.billTotal = this.products.reduce((accumulator, product) => accumulator + product.price * product.quantity, 0);
-  }
-
-  save() {
-    // TODO: validate inputs
-    const date = new Date(this.date);
-    const time = new Date(this.time);
-    date.setHours(time.getHours());
-    date.setMinutes(time.getMinutes());
-    const bill = new Bill(
-      this.id,
-      this.storeName,
-      this.billNumber,
-      this.billCurrency,
-      date,
-      BILL_TYPES.NORMAL,
-      this.billCategory,
-      this.billTotal,
-      this.products);
-
-    if (this.isAddMode) {
-      this.billsService.addBill(bill).subscribe(
-        async (newBill) => {
-          this.location.back();
-          this.sharedService.sendBillInfoUpdateList([newBill, UpdateBillsAction.ADD]);
-          await this.presentSuccessToast();
-        },
-        () => this.presentErrorToast()
-      );
-    } else {
-      this.billsService.editBill(bill).subscribe(
-        async (editedBill) => {
-          this.location.back();
-          this.sharedService.sendBillInfo(editedBill);
-          this.sharedService.sendBillInfoUpdateList([editedBill, UpdateBillsAction.EDIT]);
-          await this.presentSuccessToast();
-        },
-        () => this.presentErrorToast()
-      );
-    }
-  }
-
-  private async presentSuccessToast() {
-    const toast = await this.toastController.create({
-      message: `Bill successfully ${this.isAddMode ? 'added' : 'edited'}!`,
-      color: 'success',
-      duration: 2000
-    });
-    await toast.present();
-  }
-
-  private async presentErrorToast() {
-    const toast = await this.toastController.create({
-      message: `Could not ${this.isAddMode ? 'add' : 'edit'} bill!`,
-      color: 'danger',
-      duration: 2000
-    });
-    await toast.present();
   }
 }

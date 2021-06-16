@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ERROR_EMAIL, ERROR_PASSWORD, PASSWORD_REGEX } from '../../../shared/services/constants';
-import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginPage implements OnInit {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private toastController: ToastController,
+    private toastService: ToastService,
     private router: Router,
   ) {
     this.form = this.formBuilder.group({
@@ -46,15 +46,6 @@ export class LoginPage implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  async presentErrorToast() {
-    const toast = await this.toastController.create({
-      message: 'Login failed!',
-      color: 'danger',
-      duration: 2000
-    });
-    await toast.present();
-  }
-
   login() {
     if (!this.form.valid) {
       this.showErrors = true;
@@ -67,6 +58,6 @@ export class LoginPage implements OnInit {
       })
       .subscribe(() => {
         this.router.navigateByUrl('');
-      }, () => this.presentErrorToast());
+      }, () => this.toastService.presentErrorToast('Login failed!'));
   }
 }

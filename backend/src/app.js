@@ -8,9 +8,11 @@ const cors = require('@robertoachar/express-cors');
 const logger = require('./logger');
 const { catchAll, notFound } = require('./error');
 
-const userRouter = require('./app/api/user/user.router');
+const usersRouter = require('./app/api/users/user.router');
 const authRouter = require('./app/api/auth/auth.router');
-const billRouter = require('./app/api/bill/bill.router');
+const billsRouter = require('./app/api/bills/bill.router');
+const exchangeRatesRouter = require('./app/api/exchange.rates/exchange.rate.router');
+const statisticsRouter = require('./app/api/statistics/statistics.router');
 
 const app = express();
 
@@ -38,7 +40,7 @@ expressJSDocSwagger(app)(options);
 
 app.use(helmet());
 app.use(cors());
-app.use(morgan('combined', { stream: logger.stream }));
+app.use(morgan('dev', { stream: logger.stream }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -51,9 +53,11 @@ app.get('/ping', (_, res) => {
   res.json({ message: 'It works!' });
 });
 
-app.use('/api/users', userRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/bills', billRouter);
+app.use('/api/bills', billsRouter);
+app.use('/api/statistics', statisticsRouter);
+app.use('/api/exchange-rates', exchangeRatesRouter);
 
 app.use(notFound);
 app.use(catchAll);

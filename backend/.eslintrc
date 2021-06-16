@@ -12,6 +12,11 @@
   "rules": {
     "no-process-env": "error",
     "no-underscore-dangle": "off",
-    "newline-per-chained-call": "off"
+    "newline-per-chained-call": "off",
+    "no-plusplus": "off",
+    "prefer-destructuring": "off",
+    "no-restricted-syntax": "off",
+    "no-restricted-globals": "off",
+    "no-nested-ternary": "off"
   }
 }

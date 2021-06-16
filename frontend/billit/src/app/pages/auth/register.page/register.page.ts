@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ERROR_COUNTRY, ERROR_EMAIL, ERROR_NAME, ERROR_PASSWORD, ERROR_PASSWORD_MATCH, PASSWORD_REGEX } from '../../../shared/services/constants';
-import { ToastController } from '@ionic/angular';
+import {
+  ERROR_COUNTRY,
+  ERROR_EMAIL,
+  ERROR_NAME,
+  ERROR_PASSWORD,
+  ERROR_PASSWORD_MATCH,
+  PASSWORD_REGEX
+} from '../../../shared/services/constants';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +30,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private toastController: ToastController,
+    private toastService: ToastService,
     private router: Router,
   ) {
     this.form = this.formBuilder.group({
@@ -57,28 +64,6 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
 
-  toggleShowPassword() {
-    this.showPasswords = !this.showPasswords;
-  }
-
-  async presentSuccessToast() {
-    const toast = await this.toastController.create({
-      message: 'Account created! Please login now',
-      color: 'success',
-      duration: 2000
-    });
-    await toast.present();
-  }
-
-  async presentErrorToast() {
-    const toast = await this.toastController.create({
-      message: 'Account creation failed!',
-      color: 'danger',
-      duration: 2000
-    });
-    await toast.present();
-  }
-
   register() {
     if (!this.form.valid) {
       this.showErrors = true;
@@ -91,10 +76,14 @@ export class RegisterPage implements OnInit {
         name: this.form.value.name,
         country: this.form.value.country,
       })
-      .subscribe(() => {
-        this.presentSuccessToast();
+      .subscribe(async () => {
+        await this.toastService.presentSuccessToast('Account created! Please login now');
         this.router.navigateByUrl('/auth/login');
-      }, () => this.presentErrorToast());
+      }, () => this.toastService.presentErrorToast('Account creation failed!'));
+  }
+
+  toggleShowPassword() {
+    this.showPasswords = !this.showPasswords;
   }
 
   private passwordsMatch(): ValidatorFn {

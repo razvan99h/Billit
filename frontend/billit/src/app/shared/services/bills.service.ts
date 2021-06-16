@@ -59,4 +59,15 @@ export class BillsService {
           return;
         }));
   }
+
+  updateFavorite(bill: Bill): Observable<boolean> {
+    console.log('updateFavorite <<< bill: ', bill);
+    return this.httpClient
+      .put<Bill>(`${this.url}/favorite/${bill._id}`, {favorite: !bill.favorite})
+      .pipe(
+        map(response => {
+          console.log('updateFavorite >>> response:', response);
+          return response.favorite;
+        }));
+  }
 }

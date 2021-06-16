@@ -1,4 +1,101 @@
-.billit-app-bar {
-  // TODO: remove after adding buttons on toolbar
-  justify-content: center;
+.billit-stats-container {
+
+  ion-card, ion-card-title, ion-card-content {
+    color: var(--billit-icon-color);
+  }
+
+  ion-toolbar {
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.25);
+  }
+
+  .billit-stats-selection-card {
+    margin-top: 1em;
+
+    ion-card-content {
+      padding: 0.3em 0.5em 0.5em 0.7em;
+    }
+
+    .billit-stats-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 0.5em;
+
+      p {
+        font-size: 1.1em;
+      }
+
+      .billit-stats-top-total {
+        font-weight: bold;
+        font-size: 1.3em;
+        margin-right: 1em;
+        margin-bottom: 0.5em;
+      }
+
+      .billit-stats-top-date {
+        display: flex;
+        align-items: center;
+
+        ion-icon {
+          font-size: 1.2em;
+        }
+
+        ion-item {
+          --border-style: none;
+        }
+      }
+    }
+  }
+
+  .billit-chart-container-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5em;
+
+    .billit-doughnut-chart-container {
+      position: relative;
+      min-height: unset;
+
+      width: 70vw;
+      height: 70vw;
+      max-width: 100%;
+    }
+
+    .billit-bar-chart-container {
+      position: relative;
+      width: 90vw;
+      max-width: 100%;
+    }
+  }
+
+  .billit-chart-legend-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.7em;
+
+    .billit-chart-legend-label {
+      display: flex;
+      align-items: center;
+
+      .billit-chart-legend-color {
+        margin-right: 0.7em;
+        width: 2em;
+        height: 0.7em;
+      }
+    }
+  }
+
+  .billit-chart-expand {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5em;
+
+    ion-icon {
+      font-size: 1.3em;
+      margin-right: 0.5em;
+    }
+  }
 }
+

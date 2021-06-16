@@ -1,11 +1,125 @@
 <ion-header>
-  <ion-toolbar>
-    <div class="billit-app-bar">
-      <img alt="logo" class="billit-toolbar-logo" src="assets/img/logo.png">
-    </div>
+  <ion-toolbar color="primary">
+    <app-appbar-logo></app-appbar-logo>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <main class="billit-stats-container">
+
+    <ion-toolbar>
+      <ion-segment (ionChange)="segmentChanged($event)" value="month">
+        <ion-segment-button value="day">
+          <ion-label>Day</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="month">
+          <ion-label>Month</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="interval">
+          <ion-label>Interval</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+
+    <ion-card class="billit-stats-selection-card">
+      <ion-card-content>
+        <div class="billit-stats-top-row">
+          <p>Select month:</p>
+          <div class="billit-stats-top-date">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <ion-item>
+              <ion-datetime displayFormat="MMMM YYYY" [(ngModel)]="month"></ion-datetime>
+            </ion-item>
+          </div>
+        </div>
+
+        <div class="billit-stats-top-row">
+          <p>Total amount spent: </p>
+          <p class="billit-stats-top-total">
+            {{storesStatistics.total}} {{currency}}
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Stores
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="billit-chart-container-wrapper">
+          <div class="billit-doughnut-chart-container">
+            <canvas baseChart
+                    [legend]="false"
+                    [colors]="doughnutChartColors"
+                    [options]="doughnutChartOptions"
+                    [labels]="storesStatistics.labelsShort"
+                    [data]="storesStatistics.amountsShort"
+                    [chartType]="'doughnut'">
+            </canvas>
+          </div>
+        </div>
+
+        <div *ngIf="expandedStores">
+          <div class="billit-chart-legend-row"
+               *ngFor="let label of storesStatistics.labels; let i = index">
+            <div class="billit-chart-legend-label">
+              <div class="billit-chart-legend-color"
+                   [ngStyle]="{'background-color': i < 5 ? colors[i] : gray}"></div>
+              <div>{{label}}</div>
+            </div>
+            <div>{{storesStatistics.amounts[i]}} {{currency}}</div>
+          </div>
+        </div>
+
+        <div class="billit-chart-expand" (click)="expandedStores = !expandedStores">
+          <ion-icon name="{{expandedStores ? 'chevron-up' : 'chevron-down'}}"></ion-icon>
+          Legend
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Categories
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="billit-chart-container-wrapper">
+          <div class="billit-bar-chart-container"
+               [ngStyle]="{'height': categoriesStatistics.labelsShort.length * 15 + 'vw'}">
+            <canvas baseChart
+                    [legend]="false"
+                    [colors]="barChartColors"
+                    [options]="barChartOptions"
+                    [labels]="categoriesStatistics.labelsShort"
+                    [data]="categoriesStatistics.amountsShort"
+                    [chartType]="'horizontalBar'">
+            </canvas>
+          </div>
+        </div>
+
+        <div *ngIf="expandedCategories">
+          <div class="billit-chart-legend-row"
+               *ngFor="let label of categoriesStatistics.labels; let i = index">
+            <div class="billit-chart-legend-label">
+              <div class="billit-chart-legend-color"
+                   [ngStyle]="{'background-color': i < 5 ? colors[i] : gray}"></div>
+              <div>{{label}}</div>
+            </div>
+            <div>{{categoriesStatistics.amounts[i]}} {{currency}}</div>
+          </div>
+        </div>
+
+        <div class="billit-chart-expand" (click)="expandedCategories = !expandedCategories">
+          <ion-icon name="{{expandedCategories ? 'chevron-up' : 'chevron-down'}}"></ion-icon>
+          Legend
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </main>
 
 </ion-content>

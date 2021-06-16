@@ -1,5 +1,5 @@
-const User = require('../api/user/user.model');
-const Bill = require('../api/bill/bill.model');
+const User = require('../api/users/user.model');
+const Bill = require('../api/bills/bill.model');
 
 module.exports.validateUserOwnership = async (request, response, next) => {
   const user = await User.findById(request.principal);

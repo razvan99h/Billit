@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { StatisticsPageRoutingModule } from './statistics-routing.module';
 
 import { StatisticsPage } from './statistics.page';
+import { BillsPageRoutingModule } from '../bills/bills-routing.module';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    StatisticsPageRoutingModule
+    StatisticsPageRoutingModule,
+    BillsPageRoutingModule,
+    ChartsModule
   ],
   declarations: [StatisticsPage]
 })

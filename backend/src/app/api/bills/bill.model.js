@@ -9,22 +9,26 @@ const BillSchema = new mongoose.Schema(
     },
     store: String,
     number: String,
+    category: String,
     date: Date,
     type: {
       type: String,
       default: BILL_TYPES.NORMAL
     },
-    category: String,
+    favorite: {
+      type: Boolean,
+      default: false
+    },
+    currency: {
+      type: String,
+      default: 'RON'
+    },
     products: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
       }
-    ],
-    currency: {
-      type: String,
-      default: 'RON'
-    }
+    ]
   },
   {
     timestamps: true

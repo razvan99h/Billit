@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// TODO: add fields like age, sex, city in order to get better data about users
 const UserSchema = new mongoose.Schema(
   {
     email: String,

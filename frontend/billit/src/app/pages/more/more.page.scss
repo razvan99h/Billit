@@ -8,6 +8,26 @@ ion-content {
 }
 
 .billit-more-page {
+  padding-right: 1em !important;
+
+  .billit-logo-container {
+    margin-top: 2em;
+    padding: 2em 10%;
+
+    .billit-logo {
+      width: 100%;
+      height: auto;
+    }
+
+    p {
+      padding-top: 0.5em;
+      text-align: center;
+      font-style: italic;
+      color: var(--ion-color-medium-shade);
+      font-size: 0.9em;
+    }
+  }
+
   ion-item {
     ion-icon {
       margin: 0 0.5em;

@@ -1,6 +1,7 @@
 const Bill = require('./bill.model');
 const Product = require('./product.model');
-const User = require('./../user/user.model');
+const User = require('../users/user.model');
+const { CURRENCIES } = require('../exchange.rates/fixer');
 const { BILL_TYPES } = require('./bill.utils');
 const { toPlainBillObject } = require('./bill.utils');
 
@@ -34,32 +35,29 @@ module.exports.billExists = async (request, response, next) => {
 module.exports.validateBillFields = async (request, response, next) => {
   const bill = request.body;
   let message;
-  if (bill.store !== undefined && typeof bill.store !== 'string') {
+  if (bill.store != null && typeof bill.store !== 'string') {
     message = 'Bill store should be a string';
   }
-  if (bill.number !== undefined && typeof bill.number !== 'string') {
+  if (bill.number != null && typeof bill.number !== 'string') {
     message = 'Bill number should be a string';
   }
-  if (bill.currency !== undefined && typeof bill.currency !== 'string') {
-    message = 'Bill currency should be a string';
+  if (bill.currency != null && !CURRENCIES.includes(bill.currency)) {
+    message = `Bill currency should be one of: ${CURRENCIES}`;
   }
-  if (bill.date !== undefined && !Date.parse(bill.date)) {
+  if (bill.date !== null && !Date.parse(bill.date)) {
     message = 'Bill date invalid';
   }
-  if (
-    bill.type !== undefined &&
-    !Object.values(BILL_TYPES).includes(bill.type)
-  ) {
+  if (bill.type !== null && !Object.values(BILL_TYPES).includes(bill.type)) {
     message = 'Bill type invalid';
   }
-  if (bill.category !== undefined && typeof bill.category !== 'string') {
+  if (bill.category != null && typeof bill.category !== 'string') {
     message = 'Bill category should be a string';
   }
   if (bill.category && bill.type === BILL_TYPES.TRUSTED) {
     message = 'Cannot set category on a trusted bill';
   }
   if (
-    bill.products !== undefined &&
+    bill.products !== null &&
     !(bill.products instanceof Array && bill.products.length > 0)
   ) {
     message = 'Bill products should be a non-empty array';
@@ -253,4 +251,30 @@ module.exports.removeBill = async (request, response) => {
   await Product.deleteMany({ bill: request.params.id });
   await Bill.findByIdAndDelete(request.params.id);
   response.json(request.params.id);
+};
+
+/**
+ * PUT /api/bills/favorite/:id
+ * @summary Mark or unmark bill identified by id as favorite
+ * @security BearerAuth
+ * @param {string} request.params.id - Bill id
+ * @param {object} request.body.favorite favorite status to update to
+ * @return {Bill} 200 - Updated bill
+ * @return {object} 400 - Invalid parameters
+ * @return {object} 403 - Resource not owned
+ * @return {object} 404 - Bill does not exist
+ */
+module.exports.markBillFavorite = async (request, response) => {
+  const favorite = request.body.favorite;
+  if (typeof favorite !== 'boolean') {
+    response.status(400);
+    response.send(`Field 'favorite' must be a boolean!`);
+    return;
+  }
+  const bill = await Bill.findByIdAndUpdate(
+    request.params.id,
+    { favorite },
+    { new: true }
+  );
+  response.json(bill);
 };

@@ -1,38 +1,85 @@
-.billit-card-row {
+.billit-content {
+  padding-bottom: 0.5em;
+}
+
+.billit-card-wrapper {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  text-align: center;
 
-  .billit-top-row-element {
-    display: flex;
-    font-weight: normal;
-
-    ion-icon {
-      font-size: 1em;
-      padding-top: 0.1em;
-      margin-left: 0.18em;
-      margin-right: 0.58em;
-    }
-  }
-
-  .billit-store-name {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 50vw;
-  }
-
-  .billit-price {
-    font-weight: normal;
-  }
-
-  .billit-bottom-row-element {
-    display: flex;
-    font-size: 0.9em;
+  p {
+    font-weight: bold;
     color: var(--billit-icon-color);
-    white-space: nowrap;
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
 
-    ion-icon {
-      font-size: 1.1em;
-      margin-right: 0.25em;
+  ion-card {
+    margin-bottom: 0;
+  }
+}
+
+.billit-card-content {
+  width: 100%;
+
+  .billit-card-row {
+    display: flex;
+    justify-content: space-between;
+
+    .billit-top-row-element {
+      display: flex;
+      font-weight: normal;
+
+      ion-icon {
+        font-size: 1em;
+        padding-top: 0.1em;
+        margin-left: 0.18em;
+        margin-right: 0.58em;
+      }
+    }
+
+    .billit-store-name {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 50vw;
+    }
+
+    .billit-price {
+      font-weight: normal;
+    }
+
+    .billit-bottom-row-element {
+      display: flex;
+      font-size: 0.9em;
+      color: var(--billit-icon-color);
+      white-space: nowrap;
+
+      ion-icon {
+        font-size: 1.1em;
+        margin-right: 0.25em;
+      }
+
+      .billit-trusted-icon {
+        color: var(--billit-trusted-color);
+      }
     }
   }
+}
+
+.billit-favorite-on {
+  background-color: var(--billit-favorite-color);
+  margin-left: -5px;
+}
+
+.billit-favorite-off {
+  background-color: var(--ion-color-medium-shade);
+}
+
+.billit-favorite-border {
+  box-shadow: inset -5px 0 0 0 var(--billit-favorite-color);
+}
+
+.billit-card-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
 }

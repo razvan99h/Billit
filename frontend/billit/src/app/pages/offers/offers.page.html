@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <app-appbar-logo></app-appbar-logo>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="billit-offers-background">
+    <ion-card class="billit-offers-logo"
+              *ngFor="let offer of offers; let i = index"
+              (click)="openLink(i)">
+      <img alt="" src="assets/img/offers/{{offer[0]}}">
+    </ion-card>
+  </div>
+</ion-content>

@@ -11,6 +11,11 @@
       <ion-label>Stats</ion-label>
     </ion-tab-button>
 
+    <ion-tab-button tab="offers" [disabled]="checkFormActive()">
+      <ion-icon name="storefront"></ion-icon>
+      <ion-label>Offers</ion-label>
+    </ion-tab-button>
+
     <ion-tab-button tab="more" [disabled]="checkFormActive()">
       <ion-icon name="ellipsis-horizontal"></ion-icon>
       <ion-label>More</ion-label>

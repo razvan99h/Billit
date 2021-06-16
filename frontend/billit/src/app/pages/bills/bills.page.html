@@ -1,12 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-icon class="billit-header-icon" slot="start" name="search">
-    </ion-icon>
-    <div class="billit-app-bar">
-      <img alt="logo" class="billit-toolbar-logo" src="assets/img/icon-white.png">
-    </div>
-    <ion-icon class="billit-header-icon" slot="end" name="filter">
-    </ion-icon>
+    <ion-icon class="billit-header-icon" slot="start" name="search"></ion-icon>
+    <app-appbar-logo></app-appbar-logo>
+    <ion-icon class="billit-header-icon" slot="end" name="filter"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
@@ -25,41 +21,66 @@
     </ion-fab-list>
   </ion-fab>
 
-  <ion-card *ngFor="let bill of bills" (click)="goToBillDetails(bill)">
-    <ion-card-header>
-      <ion-card-subtitle>
-        <div class="billit-card-row">
-          <div class="billit-top-row-element">
-            <ion-icon name="calendar-outline"></ion-icon>
-            <div>
-              {{bill.getDateString()}}
-            </div>
-          </div>
-          <div class="billit-top-row-element">
-            <ion-icon name="time-outline"></ion-icon>
-            <div>
-              {{bill.getTimeString()}}
-            </div>
-          </div>
-        </div>
-      </ion-card-subtitle>
+  <div class="billit-content">
+    <div class="billit-card-wrapper"
+         *ngFor="let bill of bills; let i = index">
 
-      <ion-card-title>
-        <div class="billit-card-row">
-          <div class="billit-bottom-row-element">
-            <ion-icon name="cart"
-                      [ngStyle]="bill.type === TRUSTED_TYPE && {'color': 'var(--billit-trusted-color)'}"></ion-icon>
-            <div class="billit-store-name">
-              {{bill.store}}
-            </div>
-          </div>
-          <div class="billit-bottom-row-element billit-price">
-            {{bill.total.toFixed(2) + ' ' + bill.currency}}
-          </div>
-        </div>
-      </ion-card-title>
-    </ion-card-header>
+      <p *ngIf="i === 0 || (intervalsToShow[i] && intervalsToShow[i] !== intervalsToShow[i - 1])">
+        {{intervalsToShow[i]?.name}}
+      </p>
 
-  </ion-card>
+      <ion-card>
+        <ion-item-sliding #slidingItem>
+          <ion-item-options side="start">
+            <ion-item-option color="danger" (click)="removeBill(slidingItem, i)">
+              <ion-icon class="billit-header-icon" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
 
+          <ion-item-options side="end">
+            <ion-item-option [ngClass]="bill.favorite ? 'billit-favorite-on': 'billit-favorite-off'"
+                             (click)="updateFavorite(slidingItem, i)">
+              <ion-icon class="billit-header-icon" name="star"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+          <ion-item class="billit-card-item" (click)="goToBillDetails(bill)">
+            <ion-card-header class="billit-card-content {{bill.favorite ? 'billit-favorite-border' : ''}}">
+              <ion-card-subtitle>
+                <div class="billit-card-row">
+                  <div class="billit-top-row-element">
+                    <ion-icon name="calendar-outline"></ion-icon>
+                    <div>
+                      {{bill.getDateString()}}
+                    </div>
+                  </div>
+                  <div class="billit-top-row-element">
+                    <ion-icon name="time-outline"></ion-icon>
+                    <div>
+                      {{bill.getTimeString()}}
+                    </div>
+                  </div>
+                </div>
+              </ion-card-subtitle>
+
+              <ion-card-title>
+                <div class="billit-card-row">
+                  <div class="billit-bottom-row-element">
+                    <ion-icon name="cart" [ngClass]="bill.type === TRUSTED_TYPE && 'billit-trusted-icon'"></ion-icon>
+                    <div class="billit-store-name">
+                      {{bill.store}}
+                    </div>
+                  </div>
+                  <div class="billit-bottom-row-element billit-price">
+                    {{bill.total.toFixed(2) + ' ' + bill.currency}}
+                  </div>
+                </div>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-item>
+        </ion-item-sliding>
+
+      </ion-card>
+    </div>
+  </div>
 </ion-content>

@@ -1,20 +1,25 @@
-<ion-header>
-  <ion-toolbar>
-    <div class="billit-app-bar">
-      <img alt="logo" class="billit-toolbar-logo" src="assets/img/logo.png">
-    </div>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content class="billit-more-page">
-  <ion-list>
-    <ion-item button>
-      <ion-icon name="person-circle-outline"></ion-icon>
-      <ion-label>My account</ion-label>
-    </ion-item>
-    <ion-item button (click)="logout()">
-      <ion-icon name="log-out-outline"></ion-icon>
-      <ion-label>Logout</ion-label>
-    </ion-item>
-  </ion-list>
+
+<ion-content>
+  <main class="billit-more-page">
+    <div class="billit-logo-container">
+      <img src="../../../assets/img/logo.png" alt="logo" class="billit-logo"/>
+      <p>Version 1.0.0</p>
+    </div>
+
+    <ion-list>
+      <ion-item button>
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <ion-label>My account</ion-label>
+      </ion-item>
+      <ion-item button>
+        <ion-icon name="help"></ion-icon>
+        <ion-label>FAQ</ion-label>
+      </ion-item>
+      <ion-item button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        <ion-label>Logout</ion-label>
+      </ion-item>
+    </ion-list>
+  </main>
 </ion-content>

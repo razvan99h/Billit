@@ -14,8 +14,12 @@ export class Product {
     this.category = category;
   }
 
-  static fromJSON(json: any) {
+  static fromJSON(json: any): Product {
     return new Product(json._id, json.name, json.price, json.quantity, json.category);
+  }
+
+  static empty(): Product {
+    return new Product(null, null, null, null, null);
   }
 
   computeTotal(): number {

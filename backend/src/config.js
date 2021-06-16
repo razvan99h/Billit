@@ -2,7 +2,13 @@
 
 require('dotenv').config();
 
-const environment = ['NODE_ENV', 'DATABASE', 'PORT', 'JWT_SECRET'];
+const environment = [
+  'NODE_ENV',
+  'DATABASE',
+  'PORT',
+  'JWT_SECRET',
+  'FIXER_API_KEY'
+];
 
 environment.forEach((name) => {
   if (!process.env[name]) {
@@ -14,5 +20,6 @@ module.exports = {
   NODE_ENV: process.env.NODE_ENV,
   DATABASE: process.env.DATABASE,
   PORT: process.env.PORT,
+  FIXER_API_KEY: process.env.FIXER_API_KEY,
   JWT_SECRET: process.env.JWT_SECRET
 };

@@ -14,6 +14,7 @@ export class Bill {
   date: Date;
   type: string;
   category: string;
+  favorite: boolean;
   total: number;
   products: Array<Product>;
 
@@ -25,6 +26,7 @@ export class Bill {
     date: Date,
     type: string,
     category: string,
+    favorite: boolean,
     total: number,
     products: Array<Product>
   ) {
@@ -35,6 +37,7 @@ export class Bill {
     this.date = date;
     this.type = type;
     this.category = category;
+    this.favorite = favorite;
     this.total = total;
     this.products = products;
   }
@@ -42,7 +45,11 @@ export class Bill {
   static fromJSON(json: any): Bill {
     const date = new Date(json.date);
     const products = json.products.map(productJSON => Product.fromJSON(productJSON));
-    return new Bill(json._id, json.store, json.number, json.currency, date, json.type, json.category, json.total, products);
+    return new Bill(json._id, json.store, json.number, json.currency, date, json.type, json.category, json.favorite, json.total, products);
+  }
+
+  static emptyBill(): Bill {
+    return new Bill(null, null, null, null, null, null, null, null, null, []);
   }
 
   getDateString(): string {

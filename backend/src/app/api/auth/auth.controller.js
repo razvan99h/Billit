@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../../middleware/jwt.middleware');
-const User = require('../user/user.model');
+const User = require('../users/user.model');
 
 const BCRYPT_PASSES = 10;
 const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/g;
