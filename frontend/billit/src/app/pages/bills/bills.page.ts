@@ -113,7 +113,7 @@ export class BillsPage implements OnInit, OnDestroy {
   }
 
   openQRScanner() {
-    this.barcodeScanner.scan().then(barcodeData => {
+    this.barcodeScanner.scan({formats: 'QR_CODE'}).then(barcodeData => {
       const scannedBill = Bill.fromBarcodeJSON(JSON.parse(barcodeData.text));
       this.billsService
         .addBill(scannedBill)
