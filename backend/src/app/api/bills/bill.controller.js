@@ -192,11 +192,11 @@ module.exports.addBill = async (request, response) => {
  */
 module.exports.updateBill = async (request, response) => {
   const bill = await Bill.findById(request.params.id);
-  // if (bill.type === BILL_TYPES.TRUSTED) {
-  //   response.status(405);
-  //   response.send('Cannot update trusted bills');
-  //   return;
-  // }
+  if (bill.type === BILL_TYPES.TRUSTED) {
+    response.status(405);
+    response.send('Cannot update trusted bills');
+    return;
+  }
 
   const { products } = request.body;
   let newData = request.body;
