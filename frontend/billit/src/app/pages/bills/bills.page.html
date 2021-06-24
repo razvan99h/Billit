@@ -22,6 +22,9 @@
   </ion-fab>
 
   <div class="billit-content">
+    <h5 class="text-center font-italic mt-4" *ngIf="bills && bills.length === 0">
+      No bills added yet!
+    </h5>
     <div class="billit-card-wrapper"
          *ngFor="let bill of bills; let i = index">
 
@@ -44,7 +47,7 @@
             </ion-item-option>
           </ion-item-options>
 
-          <ion-item class="billit-card-item" (click)="goToBillDetails(bill)">
+          <ion-item class="billit-card-item" (click)="goToBillDetails(bill)" mode="md">
             <ion-card-header class="billit-card-content {{bill.favorite ? 'billit-favorite-border' : ''}}">
               <ion-card-subtitle>
                 <div class="billit-card-row">

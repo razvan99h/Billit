@@ -1,4 +1,11 @@
+
+
 .billit-stats-container {
+
+  ion-toolbar ion-segment {
+    width: calc(100% - 1em);
+    margin: 0 0.5em;
+  }
 
   ion-card, ion-card-title, ion-card-content {
     color: var(--billit-icon-color);
@@ -43,6 +50,11 @@
         ion-item {
           --border-style: none;
         }
+      }
+
+      .billit-stats-top-date-interval {
+        justify-content: space-between;
+        width: 100%;
       }
     }
   }

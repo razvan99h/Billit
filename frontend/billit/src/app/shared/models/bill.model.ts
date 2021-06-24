@@ -77,7 +77,6 @@ export class Bill {
 
   getCategories(): Array<string> {
     const productCategories = Array.from(new Set(this.products.map(p => p.category)));
-    console.log(productCategories, this.category);
     if (this.category) {
       return [this.category];
     }

@@ -4,7 +4,7 @@
     <img src="../../../../assets/img/logo.png" alt="logo" class="billit-logo"/>
 
     <div class="billit-input-container">
-      <ion-item class="input-field">
+      <ion-item class="input-field" mode="md">
         <ion-label position="floating">Email</ion-label>
         <ion-input formControlName="email"></ion-input>
       </ion-item>
@@ -14,7 +14,7 @@
         {{ERROR_EMAIL}}
       </p>
 
-      <ion-item class="input-field">
+      <ion-item class="input-field" mode="md">
         <ion-label position="floating">Password</ion-label>
         <ion-input formControlName="password"
                    [type]="showPassword ? 'text' : 'password'">

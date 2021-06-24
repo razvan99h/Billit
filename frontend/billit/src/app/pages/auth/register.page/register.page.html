@@ -14,9 +14,9 @@
     </div>
 
     <div class="billit-input-container">
-      <ion-item class="input-field">
+      <ion-item class="input-field" mode="md">
         <ion-label position="floating">Email</ion-label>
-        <ion-input formControlName="email"></ion-input>
+        <ion-input formControlName="email" type="email"></ion-input>
       </ion-item>
 
       <p class="billit-input-error-message ion-padding-start"
@@ -24,7 +24,7 @@
         {{ERROR_EMAIL}}
       </p>
 
-      <ion-item class="input-field">
+      <ion-item class="input-field" mode="md">
         <ion-label position="floating">Password</ion-label>
         <ion-input formControlName="password"
                    [type]="showPasswords ? 'text' : 'password'">
@@ -40,7 +40,7 @@
         {{ERROR_PASSWORD}}
       </p>
 
-      <ion-item class="input-field">
+      <ion-item class="input-field" mode="md">
         <ion-label position="floating">Confirm Password</ion-label>
         <ion-input formControlName="confirmPassword"
                    [type]="showPasswords ? 'text' : 'password'">
@@ -56,9 +56,9 @@
         {{ERROR_PASSWORD_MATCH}}
       </p>
 
-      <ion-item class="input-field">
+      <ion-item class="input-field" mode="md">
         <ion-label position="floating">Name</ion-label>
-        <ion-input formControlName="name"></ion-input>
+        <ion-input formControlName="name"  type="text"></ion-input>
       </ion-item>
 
       <p class="billit-input-error-message ion-padding-start"
@@ -66,9 +66,9 @@
         {{ERROR_NAME}}
       </p>
 
-      <ion-item class="input-field">
+      <ion-item class="input-field" mode="md">
         <ion-label position="floating">Country</ion-label>
-        <ion-input formControlName="country"></ion-input>
+        <ion-input formControlName="country" type="text"></ion-input>
       </ion-item>
 
       <p class="billit-input-error-message ion-padding-start"

@@ -13,6 +13,11 @@ ion-label, p, h1, h2, h3, h4, h5, h6 {
   --color: var(--ion-text-color) !important;
 }
 
+ion-card {
+  // override
+  margin: 0.75em 0.75em 0 0.75em;
+}
+
 .input-field {
   // override
   margin-bottom: 20px !important;

@@ -39,7 +39,7 @@ export class BillsPage implements OnInit, OnDestroy {
   ) {
     this.buildIntervals();
 
-    this.currency = localStorageService.loginData.currency;
+    this.currency = this.localStorageService.loginData.currency;
     this.billsService
       .getAllBills()
       .subscribe(bills => {
@@ -158,7 +158,7 @@ export class BillsPage implements OnInit, OnDestroy {
 
     this.intervals.push({
       name: 'Earlier this week',
-      range: moment.range(firstDayOfWeek.clone(), startOfToday.clone().subtract(2, 'days').startOf('day'))
+      range: moment.range(firstDayOfWeek.clone(), startOfToday.clone().subtract(2, 'days').endOf('day'))
     });
 
     this.intervals.push({

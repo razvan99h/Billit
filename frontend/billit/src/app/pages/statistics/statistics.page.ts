@@ -6,6 +6,11 @@ import { ToastService } from '../../shared/services/toast.service';
 import { StatisticsRequest, StatisticsRequestType } from '../../shared/models/api/statistics-api.models';
 import { ChartOptions } from 'chart.js';
 import { Color } from 'ng2-charts';
+import { StatisticsTab } from '../../shared/models/enums/statistics.tab';
+
+// @ts-ignore
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
 
 @Component({
   selector: 'app-statistics',
@@ -13,11 +18,16 @@ import { Color } from 'ng2-charts';
   styleUrls: ['./statistics.page.scss'],
 })
 export class StatisticsPage implements OnInit {
-
+  STATISTICS_TAB = StatisticsTab;
+  tab = StatisticsTab.MONTH;
   currency: string;
+  day: string;
   month: string;
+  intervalStart: string;
+  intervalEnd: string;
   storesStatistics = Statistics.empty();
   categoriesStatistics = Statistics.empty();
+  moment;
 
   colors = ['#ff6356', '#ffd246', '#78d237', '#2d73f5', '#aa46be'];
   gray = '#afafaf';
@@ -27,12 +37,13 @@ export class StatisticsPage implements OnInit {
     responsive: true,
     maintainAspectRatio: false,
   };
+
   barChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
   };
-
   expandedStores = false;
+
   expandedCategories = false;
 
   constructor(
@@ -40,15 +51,18 @@ export class StatisticsPage implements OnInit {
     private statisticsService: StatisticsService,
     private toastService: ToastService,
   ) {
-    this.month = new Date().toISOString();
     this.currency = localStorageService.loginData.currency;
-    this.fetchStatistics();
+    this.moment = extendMoment(Moment);
+    this.moment.locale(window.navigator.language);
+
     this.doughnutChartColors = [{
       backgroundColor: [...StatisticsPage.shuffle(this.colors), this.gray]
     }];
     this.barChartColors = [{
       backgroundColor: [...StatisticsPage.shuffle(this.colors), this.gray]
     }];
+    this.initializeDates();
+    this.fetchStatistics();
   }
 
   private static shuffle(a) {
@@ -63,15 +77,33 @@ export class StatisticsPage implements OnInit {
   }
 
   segmentChanged(event: any) {
-
+    this.tab = event.detail.value;
+    this.fetchStatistics();
   }
 
-  private fetchStatistics() {
-    const requestModel: StatisticsRequest = {
+  fetchStatistics() {
+    const dateFormat = 'yyyy-MM-DD HH:mm';
+    let requestModel: StatisticsRequest = {
       currency: this.currency,
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      month: new Date().toLocaleDateString('en-US'),
     };
+    if (this.tab === StatisticsTab.DAY) {
+      requestModel = {
+        ...requestModel,
+        date: this.moment(this.day).format(dateFormat),
+      };
+    } else if (this.tab === StatisticsTab.MONTH) {
+      requestModel = {
+        ...requestModel,
+        month: this.moment(this.month).format(dateFormat),
+      };
+    } else if (this.tab === StatisticsTab.INTERVAL) {
+      requestModel = {
+        ...requestModel,
+        from: this.moment(this.intervalStart).format(dateFormat),
+        to: this.moment(this.intervalEnd).format(dateFormat),
+      };
+    }
     this.statisticsService
       .getStatistics(StatisticsRequestType.stores, requestModel)
       .subscribe((statistics) => {
@@ -82,5 +114,12 @@ export class StatisticsPage implements OnInit {
       .subscribe((statistics) => {
         this.categoriesStatistics = statistics;
       }, () => this.toastService.presentErrorToast('Could not load store statistics'));
+  }
+
+  private initializeDates() {
+    const now = new Date();
+    this.day = this.month = now.toISOString();
+    this.intervalStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0).toISOString();
+    this.intervalEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 0).toISOString();
   }
 }
