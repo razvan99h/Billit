@@ -113,7 +113,7 @@ export class StatisticsPage implements OnInit {
       .getStatistics(StatisticsRequestType.categories, requestModel)
       .subscribe((statistics) => {
         this.categoriesStatistics = statistics;
-      }, () => this.toastService.presentErrorToast('Could not load store statistics'));
+      }, () => this.toastService.presentErrorToast('Could not load categories statistics'));
   }
 
   private initializeDates() {

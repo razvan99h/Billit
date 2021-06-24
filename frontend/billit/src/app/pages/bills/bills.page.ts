@@ -37,15 +37,10 @@ export class BillsPage implements OnInit, OnDestroy {
     private toastService: ToastService,
     private barcodeScanner: BarcodeScanner,
   ) {
-    this.buildIntervals();
-
     this.currency = this.localStorageService.loginData.currency;
-    this.billsService
-      .getAllBills()
-      .subscribe(bills => {
-        this.bills = bills;
-        this.computeIntervalsToShow();
-      });
+
+    this.buildIntervals();
+    this.fetchBills();
     this.sharedService
       .getBillInfoUpdateList()
       .subscribe((info: [Bill, UpdateBillsAction]) => {
@@ -75,6 +70,23 @@ export class BillsPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  fetchBills(event?) {
+    this.billsService
+      .getAllBills()
+      .subscribe(bills => {
+        this.bills = bills;
+        this.computeIntervalsToShow();
+        if (event) {
+          event.target.complete();
+        }
+      }, async () => {
+        if (event) {
+          await this.toastService.presentErrorToast('Could not load bills!');
+          event.target.complete();
+        }
+      });
   }
 
   async removeBill(slidingItem: any, index: number) {
