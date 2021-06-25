@@ -9,8 +9,25 @@ import { Location } from '@angular/common';
 import { SharedService } from '../../../shared/services/shared.service';
 import { take } from 'rxjs/operators';
 import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.action';
-import { CURRENCIES } from '../../../shared/services/constants';
+import {
+  CURRENCIES,
+  ERROR_CATEGORY_LONG,
+  ERROR_CATEGORY_REQUIRED,
+  ERROR_NUMBER_LONG,
+  ERROR_NUMBER_REQUIRED,
+  ERROR_PRICE_INVALID,
+  ERROR_PRODUCT_NAME_LONG,
+  ERROR_PRODUCT_NAME_REQUIRED,
+  ERROR_QUANTITY_BIG,
+  ERROR_QUANTITY_INVALID,
+  ERROR_STORE_LONG,
+  ERROR_STORE_REQUIRED
+} from '../../../shared/services/constants';
 import { ToastService } from '../../../shared/services/toast.service';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { extendMoment } from 'moment-range';
+// @ts-ignore
+import Moment from 'moment';
 
 @Component({
   selector: 'app-add-bill',
@@ -18,6 +35,19 @@ import { ToastService } from '../../../shared/services/toast.service';
   styleUrls: ['./add-edit-bill.component.scss'],
 })
 export class AddEditBillComponent implements OnInit {
+  readonly ERROR_STORE_REQUIRED = ERROR_STORE_REQUIRED;
+  readonly ERROR_STORE_LONG = ERROR_STORE_LONG;
+  readonly ERROR_CATEGORY_REQUIRED = ERROR_CATEGORY_REQUIRED;
+  readonly ERROR_CATEGORY_LONG = ERROR_CATEGORY_LONG;
+  readonly ERROR_NUMBER_REQUIRED = ERROR_NUMBER_REQUIRED;
+  readonly ERROR_NUMBER_LONG = ERROR_NUMBER_LONG;
+  readonly ERROR_PRODUCT_NAME_REQUIRED = ERROR_PRODUCT_NAME_REQUIRED;
+  readonly ERROR_PRODUCT_NAME_LONG = ERROR_PRODUCT_NAME_LONG;
+  readonly ERROR_QUANTITY_INVALID = ERROR_QUANTITY_INVALID;
+  readonly ERROR_QUANTITY_BIG = ERROR_QUANTITY_BIG;
+  readonly ERROR_PRICE_INVALID = ERROR_PRICE_INVALID;
+  form: FormGroup;
+  showErrors = false;
   id: string;
   date: string;
   time: string;
@@ -29,6 +59,7 @@ export class AddEditBillComponent implements OnInit {
   billTotal = 0;
   isAddMode = true;
   currencies = CURRENCIES;
+  moment;
   private readonly userCurrency: string;
 
   constructor(
@@ -40,8 +71,12 @@ export class AddEditBillComponent implements OnInit {
     private toastService: ToastService,
     private location: Location,
     private alertController: AlertController,
+    private formBuilder: FormBuilder,
   ) {
     this.userCurrency = localStorageService.loginData.currency;
+    this.moment = extendMoment(Moment);
+    this.moment.locale(window.navigator.language);
+    this.initializeForm();
 
     if (this.router.url === '/tabs/bills/add') {
       this.id = null;
@@ -60,8 +95,21 @@ export class AddEditBillComponent implements OnInit {
           this.billNumber = bill.number;
           this.billCurrency = bill.currency;
           this.billCategory = bill.category;
-          this.products = bill.products;
+          this.products = [...bill.products.map(p => (new Product(p._id, p.name, p.price, p.quantity, p.category)))];
           this.billTotal = bill.total;
+          this.form.value.store = bill.store;
+          this.form.value.number = bill.number;
+          this.form.value.category = bill.category;
+          (this.form.controls.products as FormArray).removeAt(0); // remove the empty form added at initialize
+          this.products.forEach(product => {
+            (this.form.controls.products as FormArray).push(this.addProductForm());
+            const last = this.form.value.products.length - 1;
+            this.form.value.products[last] = {
+              name: product.name,
+              quantity: product.quantity,
+              price: product.price,
+            };
+          });
         });
     }
   }
@@ -70,7 +118,10 @@ export class AddEditBillComponent implements OnInit {
   }
 
   save() {
-    // TODO: validate inputs
+    this.showErrors = true;
+    if (!this.form.valid) {
+      return;
+    }
     const date = new Date(this.date);
     const time = new Date(this.time);
     date.setHours(time.getHours());
@@ -90,7 +141,7 @@ export class AddEditBillComponent implements OnInit {
     if (this.isAddMode) {
       this.billsService.addBill(bill).subscribe(
         async (newBill) => {
-          this.location.back();
+          this.navigateBack();
           this.sharedService.sendBillInfoUpdateList([newBill, UpdateBillsAction.ADD]);
           await this.toastService.presentSuccessToast('Bill successfully added!');
         },
@@ -99,7 +150,7 @@ export class AddEditBillComponent implements OnInit {
     } else {
       this.billsService.editBill(bill).subscribe(
         async (editedBill) => {
-          this.location.back();
+          this.navigateBack();
           this.sharedService.sendBillInfo(editedBill);
           this.sharedService.sendBillInfoUpdateList([editedBill, UpdateBillsAction.EDIT]);
           await this.toastService.presentSuccessToast('Bill successfully edited!');
@@ -128,20 +179,80 @@ export class AddEditBillComponent implements OnInit {
     const {role} = await alert.onDidDismiss();
 
     if (role === 'confirm') {
-      this.location.back();
+      this.navigateBack();
     }
   }
 
   removeProduct(index: number) {
     this.products.splice(index, 1);
+    (this.form.value.products as Array<any>).splice(index, 1);
     this.computeBillTotal();
   }
 
   addProduct() {
     this.products.push(Product.empty());
+    (this.form.controls.products as FormArray).push(this.addProductForm());
   }
 
   computeBillTotal() {
     this.billTotal = this.products.reduce((accumulator, product) => accumulator + product.price * product.quantity, 0);
+  }
+
+  getProductFormControl(index: number): FormGroup {
+    return (this.form.controls.products as FormArray).controls[index] as FormGroup;
+  }
+
+  private initializeForm() {
+    this.form = this.formBuilder.group({
+      store: [
+        null, [
+          Validators.required,
+          Validators.maxLength(50),
+        ]
+      ],
+      category: [
+        null, [
+          Validators.required,
+          Validators.maxLength(20),
+        ]
+      ],
+      number: [
+        null, [
+          Validators.required,
+          Validators.maxLength(20),
+        ]
+      ],
+      products: this.formBuilder.array([
+        this.addProductForm(),
+      ])
+    });
+  }
+
+  private addProductForm() {
+    return this.formBuilder.group({
+      name: [
+        null, [
+          Validators.required,
+          Validators.maxLength(30),
+        ]
+      ],
+      quantity: [
+        null, [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(9999),
+        ]
+      ],
+      price: [
+        null, [
+          Validators.required,
+          Validators.min(0),
+        ]
+      ],
+    });
+  }
+
+  private navigateBack() {
+    this.location.back();
   }
 }

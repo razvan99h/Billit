@@ -74,7 +74,7 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
         async () => {
           this.goBack();
           this.sharedService.sendBillInfoUpdateList([
-            Bill.emptyBill(),
+            Bill.emptyBill(this.bill._id),
             UpdateBillsAction.DELETE
           ]);
           await this.toastService.presentSuccessToast('Bill successfully deleted!');

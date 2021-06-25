@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BillsPage } from './bills.page';
 import { AddEditBillComponent } from './add-edit-bill/add-edit-bill.component';
 import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BillDetailsComponent } from './bill-details/bill-details.component';
 import { DetailsPopoverComponent } from './bill-details/details-popover/details-popover.component';
@@ -31,7 +31,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [AddEditBillComponent, DetailsPopoverComponent, BillDetailsComponent, AppbarLogoComponent],
-  imports: [RouterModule.forChild(routes), IonicModule, FormsModule, CommonModule],
+    imports: [RouterModule.forChild(routes), IonicModule, FormsModule, CommonModule, ReactiveFormsModule],
   exports: [RouterModule, AppbarLogoComponent],
 })
 export class BillsPageRoutingModule {

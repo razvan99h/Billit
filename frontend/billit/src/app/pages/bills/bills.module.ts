@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -14,7 +14,8 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
     CommonModule,
     FormsModule,
     IonicModule,
-    BillsPageRoutingModule
+    BillsPageRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [BillsPage],
   providers: [

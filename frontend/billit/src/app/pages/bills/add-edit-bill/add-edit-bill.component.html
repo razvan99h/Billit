@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-icon slot="start" class="billit-header-icon" name="arrow-back" (click)="goBack()">
+    <ion-icon slot="start" class="billit-header-icon" name="arrow-back"
+              (click)="goBack()">
     </ion-icon>
     <app-appbar-logo></app-appbar-logo>
     <ion-icon slot="end" class="billit-header-icon"></ion-icon> <!-- here only to achieve header equilibrium-->
@@ -10,142 +11,210 @@
 <ion-content>
   <main class="billit-add-container">
 
-    <section class="billit-add-top-section">
-      <h5>
-        Bill info
-      </h5>
+    <section class="billit-add-top-section"
+             [formGroup]="form">
+      <h5>Bill info</h5>
 
       <ion-card>
         <ion-card-content class="billit-add-info-card">
           <div class="billit-add-double-row">
             <div class="billit-add-left">
               <ion-icon name="calendar-outline"></ion-icon>
-              <ion-item>
-                <ion-datetime displayFormat="DD MMM YYYY" placeholder="Date" [(ngModel)]="date"></ion-datetime>
+              <ion-item mode="md">
+                <ion-datetime displayFormat="DD MMM YYYY" placeholder="Date"
+                              [max]="moment().format()"
+                              [(ngModel)]="date"
+                              [ngModelOptions]="{standalone: true}"></ion-datetime>
               </ion-item>
             </div>
             <div class="billit-add-right">
               <ion-icon name="time-outline"></ion-icon>
-              <ion-item>
-                <ion-datetime displayFormat="HH:mm" placeholder="Time" [(ngModel)]="time"></ion-datetime>
+              <ion-item mode="md">
+                <ion-datetime displayFormat="HH:mm" placeholder="Time"
+                              [max]="moment().format()"
+                              [(ngModel)]="time"
+                              [ngModelOptions]="{standalone: true}"></ion-datetime>
               </ion-item>
             </div>
           </div>
 
           <div class="billit-add-row">
             <ion-icon name="cart"></ion-icon>
-            <ion-item class="billit-add-floating-input">
+            <ion-item class="billit-add-floating-input" mode="md">
               <ion-label position="floating">Store name</ion-label>
-              <ion-input [(ngModel)]="storeName"></ion-input>
+              <ion-input formControlName="store"
+                         [(ngModel)]="storeName"></ion-input>
             </ion-item>
           </div>
+          <p class="billit-input-error-message pl-5"
+             *ngIf="showErrors && form.controls.store.hasError('required')">
+            {{ERROR_STORE_REQUIRED}}
+          </p>
+          <p class="billit-input-error-message pl-5"
+             *ngIf="showErrors && form.controls.store.hasError('maxlength')">
+            {{ERROR_STORE_LONG}}
+          </p>
 
           <div class="billit-add-row">
             <ion-icon name="shapes-outline"></ion-icon>
-            <ion-item class="billit-add-floating-input">
+            <ion-item class="billit-add-floating-input" mode="md">
               <ion-label position="floating">Category</ion-label>
-              <ion-input [(ngModel)]="billCategory"></ion-input>
+              <ion-input formControlName="category"
+                         [(ngModel)]="billCategory"></ion-input>
             </ion-item>
           </div>
+          <p class="billit-input-error-message pl-5"
+             *ngIf="showErrors && form.controls.category.hasError('required')">
+            {{ERROR_CATEGORY_REQUIRED}}
+          </p>
+          <p class="billit-input-error-message pl-5"
+             *ngIf="showErrors && form.controls.category.hasError('maxlength')">
+            {{ERROR_CATEGORY_LONG}}
+          </p>
 
           <div class="billit-add-double-row">
             <div class="billit-add-left">
               <ion-icon name="finger-print-outline"></ion-icon>
-              <ion-item class="billit-add-floating-input">
+              <ion-item class="billit-add-floating-input pl-1" mode="md">
                 <ion-label position="floating">Bill number</ion-label>
-                <ion-input [(ngModel)]="billNumber"></ion-input>
+                <ion-input formControlName="number"
+                           [(ngModel)]="billNumber"></ion-input>
               </ion-item>
             </div>
 
             <div class="billit-add-right">
               <ion-icon name="cash-outline"></ion-icon>
               <ion-item>
-                <ion-select [value]="currencies" [(ngModel)]="billCurrency">
+                <ion-select [value]="currencies"
+                            [(ngModel)]="billCurrency"
+                            [ngModelOptions]="{standalone: true}">
                   <ion-select-option *ngFor="let currency of currencies"
-                                     value="{{currency}}">
+                                     [value]="currency">
                     {{currency}}
                   </ion-select-option>
                 </ion-select>
               </ion-item>
             </div>
           </div>
+          <p class="billit-input-error-message pl-5"
+             *ngIf="showErrors && form.controls.number.hasError('required')">
+            {{ERROR_NUMBER_REQUIRED}}
+          </p>
+          <p class="billit-input-error-message pl-5"
+             *ngIf="showErrors && form.controls.number.hasError('maxlength')">
+            {{ERROR_NUMBER_LONG}}
+          </p>
 
         </ion-card-content>
       </ion-card>
 
-      <h5>
-        Products
-      </h5>
+      <h5>Products</h5>
 
-      <ion-card *ngFor="let product of products; let i = index" class="billit-add-card">
-        <ion-item-sliding>
-          <ion-item-options side="start">
-            <ion-item-option color="danger"
-                             *ngIf="products.length > 1"
-                             (click)="removeProduct(i)">
-              <ion-icon class="billit-header-icon" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
+      <div formArrayName="products">
+        <ion-card class="billit-add-card"
+                  *ngFor="let product of products; let i = index"
+                  [formGroupName]="i">
+          <ion-item-sliding>
+            <ion-item-options side="start">
+              <ion-item-option color="danger"
+                               *ngIf="products.length > 1"
+                               (click)="removeProduct(i)">
+                <ion-icon class="billit-header-icon" name="trash"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
 
-          <ion-item>
-            <ion-card-content>
-              <div class="billit-add-product-row">
-                <div class="billit-add-product-name">
-                  <p>
-                    Name:
-                  </p>
-                  <ion-item>
-                    <ion-input placeholder="ex: Milk" [(ngModel)]="product.name"></ion-input>
-                  </ion-item>
+            <ion-item>
+              <ion-card-content>
+                <div class="billit-add-product-row">
+                  <div class="billit-add-product-name">
+                    <p>Name:</p>
+                    <ion-item mode="md">
+                      <ion-input placeholder="ex: Milk"
+                                 formControlName="name"
+                                 [(ngModel)]="product.name"
+                      ></ion-input>
+                    </ion-item>
+                  </div>
+
+                  <div class="billit-add-product-qty">
+                    <p>Qty:</p>
+                    <ion-item mode="md">
+                      <ion-input placeholder="ex: 1" type="number"
+                                 formControlName="quantity"
+                                 [(ngModel)]="product.quantity"
+                                 (ngModelChange)="computeBillTotal()">
+                      </ion-input>
+                    </ion-item>
+                  </div>
                 </div>
 
-                <div class="billit-add-product-qty">
-                  <p>
-                    Qty:
-                  </p>
-                  <ion-item>
-                    <ion-input type="number"
-                               [(ngModel)]="product.quantity"
-                               (ngModelChange)="computeBillTotal()">
-                    </ion-input>
-                  </ion-item>
-                </div>
-              </div>
-
-              <div class="billit-empty-line"></div>
-
-              <div class="billit-add-product-row">
-                <div class="billit-add-product-price">
-                  <p>
-                    Price:
-                  </p>
-                  <ion-item>
-                    <ion-input placeholder="ex: 12.5"
-                               type="number"
-                               [(ngModel)]="product.price"
-                               (ngModelChange)="computeBillTotal()">
-                    </ion-input>
-                  </ion-item>
-                  <div class="billit-add-product-empty-space"></div>
+                <div class="billit-add-product-row">
+                  <div>
+                    <p class="billit-input-error-message"
+                       *ngIf="showErrors && getProductFormControl(i).controls.name.hasError('required')">
+                      {{ERROR_PRODUCT_NAME_REQUIRED}}
+                    </p>
+                    <p class="billit-input-error-message"
+                       *ngIf="showErrors && getProductFormControl(i).controls.name.hasError('maxlength')">
+                      {{ERROR_PRODUCT_NAME_LONG}}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="billit-input-error-message"
+                       *ngIf="showErrors &&
+                       (getProductFormControl(i).controls.quantity.hasError('min') ||
+                       getProductFormControl(i).controls.quantity.hasError('required'))">
+                      {{ERROR_QUANTITY_INVALID}}
+                    </p>
+                    <p class="billit-input-error-message"
+                       *ngIf="showErrors && getProductFormControl(i).controls.quantity.hasError('max')">
+                      {{ERROR_QUANTITY_BIG}}
+                    </p>
+                  </div>
                 </div>
 
-                <div class="billit-add-product-total">
-                  <p>
-                    Total:
-                  </p>
-                  <p>
-                    {{product.computeTotal().toFixed(2)}} {{billCurrency}}
-                  </p>
+                <div class="billit-empty-line"></div>
+
+                <div class="billit-add-product-row">
+                  <div class="billit-add-product-price">
+                    <p>Price: </p>
+                    <ion-item mode="md">
+                      <ion-input placeholder="ex: 12.5" type="number"
+                                 formControlName="price"
+                                 [(ngModel)]="product.price"
+                                 (ngModelChange)="computeBillTotal()">
+                      </ion-input>
+                    </ion-item>
+                    <div class="billit-add-product-empty-space"></div>
+                  </div>
+
+                  <div class="billit-add-product-total">
+                    <p>Total:</p>
+                    <p>{{product.computeTotal().toFixed(2)}} {{billCurrency}}</p>
+                  </div>
                 </div>
-              </div>
-            </ion-card-content>
-          </ion-item>
-        </ion-item-sliding>
-      </ion-card>
+
+                <div class="billit-add-product-row">
+                  <div>
+                    <p class="billit-input-error-message"
+                       *ngIf="showErrors &&
+                       (getProductFormControl(i).controls.price.hasError('min') ||
+                       getProductFormControl(i).controls.price.hasError('required'))">
+                      {{ERROR_PRICE_INVALID}}
+                    </p>
+                  </div>
+                </div>
+
+              </ion-card-content>
+            </ion-item>
+          </ion-item-sliding>
+        </ion-card>
+      </div>
 
       <div class="d-flex justify-content-end">
         <ion-fab-button size="small">
-          <ion-icon name="add" (click)="addProduct()"></ion-icon>
+          <ion-icon name="add"
+                    (click)="addProduct()"></ion-icon>
         </ion-fab-button>
       </div>
     </section>
@@ -154,7 +223,8 @@
       <h5>
         Total: {{billTotal.toFixed(2)}} {{billCurrency}}
       </h5>
-      <ion-button shape="round" color="primary" (click)="save()">
+      <ion-button shape="round" color="primary"
+                  (click)="save()">
         {{isAddMode ? 'Save' : 'Edit'}}
       </ion-button>
     </section>

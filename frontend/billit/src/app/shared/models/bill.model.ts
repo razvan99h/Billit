@@ -54,8 +54,8 @@ export class Bill {
     return new Bill(null, json.s, json.n, json.c, date, BILL_TYPES.TRUSTED, null, false, null, products);
   }
 
-  static emptyBill(): Bill {
-    return new Bill(null, null, null, null, null, null, null, null, null, []);
+  static emptyBill(id?: string): Bill {
+    return new Bill(id, null, null, null, null, null, null, null, null, []);
   }
 
   getDateString(): string {

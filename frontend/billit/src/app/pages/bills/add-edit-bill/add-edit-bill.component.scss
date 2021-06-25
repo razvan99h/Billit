@@ -44,9 +44,9 @@
     }
 
     .billit-add-floating-input {
-      // override
 
       ion-label {
+        // override
         margin-top: -0.35em;
       }
 
@@ -60,7 +60,6 @@
 
   .billit-add-left {
     flex: 1;
-
   }
 
   .billit-add-right {
@@ -122,9 +121,18 @@
       margin-left: 0.5em;
       flex: 3;
       min-width: 10em;
+
+      ion-item ion-input {
+        text-align: center;
+      }
     }
 
+
     .billit-add-product-price {
+      p {
+        margin-right: 0.9em;
+      }
+
       ion-item {
         flex: 3.5 !important;
         --inner-padding-end: 0;

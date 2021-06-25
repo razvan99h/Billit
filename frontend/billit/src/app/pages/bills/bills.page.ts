@@ -59,7 +59,7 @@ export class BillsPage implements OnInit, OnDestroy {
           this.bills.sort((a, b) => b.date.getTime() - a.date.getTime());
         } else if (action === UpdateBillsAction.DELETE) {
           const index = this.bills.findIndex(b => b._id === bill._id);
-          this.bills.splice(index, 1); // deleted bill
+          this.bills.splice(index, 1);
         }
         this.computeIntervalsToShow();
       });
@@ -97,6 +97,7 @@ export class BillsPage implements OnInit, OnDestroy {
     this.billsService.deleteBill(this.bills[index]).subscribe(
       async () => {
         this.bills.splice(index, 1);
+        this.intervalsToShow.splice(index, 1);
         await this.toastService.presentSuccessToast('Bill successfully deleted!');
       },
       () => this.toastService.presentErrorToast('Could not delete bill!')

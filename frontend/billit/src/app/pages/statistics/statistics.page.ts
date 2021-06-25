@@ -6,11 +6,10 @@ import { ToastService } from '../../shared/services/toast.service';
 import { StatisticsRequest, StatisticsRequestType } from '../../shared/models/api/statistics-api.models';
 import { ChartOptions } from 'chart.js';
 import { Color } from 'ng2-charts';
+import { extendMoment } from 'moment-range';
 import { StatisticsTab } from '../../shared/models/enums/statistics.tab';
-
 // @ts-ignore
 import Moment from 'moment';
-import { extendMoment } from 'moment-range';
 
 @Component({
   selector: 'app-statistics',
@@ -37,13 +36,11 @@ export class StatisticsPage implements OnInit {
     responsive: true,
     maintainAspectRatio: false,
   };
-
   barChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
   };
   expandedStores = false;
-
   expandedCategories = false;
 
   constructor(
