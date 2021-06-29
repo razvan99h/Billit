@@ -56,7 +56,6 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
       componentProps: {bill: this.bill},
       event: ev,
       cssClass: 'billit-details-popover',
-      showBackdrop: false,
       translucent: true
     });
     await popover.present();

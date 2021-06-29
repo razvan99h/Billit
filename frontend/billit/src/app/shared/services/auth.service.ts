@@ -5,6 +5,7 @@ import { LocalStorageService } from './local-storage.service';
 import { map } from 'rxjs/operators';
 import { CheckLoginRequest, LoginRequest, LoginResponse, RegisterRequest } from '../models/api/auth-api.models';
 import { API_URL } from './constants';
+import { ExchangeRate } from '../models/exchange-rate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,10 @@ export class AuthService {
       .pipe(
         map(response => {
           console.log('login >>> response:', response);
-          this.localStorageService.loginData = response;
+          this.localStorageService.loginData = {
+            ...response,
+            exchangeRates: response.exchangeRates.map(exchangeRateJSON => ExchangeRate.fromJSON(exchangeRateJSON))
+          };
         }));
   }
 
@@ -59,7 +63,7 @@ export class AuthService {
 
   logout() {
     console.log('logout <<<');
-    this.localStorageService.clearLoginData();
+    this.localStorageService.clearData();
     console.log('logout >>>');
   }
 }

@@ -10,7 +10,6 @@ import { SharedService } from '../../../shared/services/shared.service';
 import { take } from 'rxjs/operators';
 import { UpdateBillsAction } from '../../../shared/models/enums/update-bills.action';
 import {
-  CURRENCIES,
   ERROR_CATEGORY_LONG,
   ERROR_CATEGORY_REQUIRED,
   ERROR_NUMBER_LONG,
@@ -28,6 +27,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { extendMoment } from 'moment-range';
 // @ts-ignore
 import Moment from 'moment';
+import { Currencies } from '../../../shared/models/enums/currencies';
 
 @Component({
   selector: 'app-add-bill',
@@ -58,7 +58,7 @@ export class AddEditBillComponent implements OnInit {
   products: Array<Product> = [];
   billTotal = 0;
   isAddMode = true;
-  currencies = CURRENCIES;
+  currencies = Object.values(Currencies);
   moment;
   private readonly userCurrency: string;
 

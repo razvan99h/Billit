@@ -15,6 +15,25 @@
   background-color: var(--ion-color-step-150, rgba(0, 0, 0, 0.13));
 }
 
+.billit-action-popover-content {
+  ion-icon {
+    margin-right: 0.5em;
+    color: var(--billit-icon-color);
+  }
+
+  ion-item {
+    // override
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+    --padding-start: 1em;
+    --padding-end: 1em;
+  }
+}
+
 .billit-details-popover {
-  --max-width: 10em;
+  --max-width: 11em;
+}
+
+.billit-filter-popover {
+  --max-width: 12em;
 }

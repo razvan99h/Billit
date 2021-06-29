@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { BillDetailsComponent } from './bill-details/bill-details.component';
 import { DetailsPopoverComponent } from './bill-details/details-popover/details-popover.component';
 import { AppbarLogoComponent } from '../../shared/components/appbar-logo/appbar-logo.component';
+import { FilterPopoverComponent } from './filter-popover/filter-popover.component';
 
 const routes: Routes = [
   {
@@ -30,8 +31,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AddEditBillComponent, DetailsPopoverComponent, BillDetailsComponent, AppbarLogoComponent],
-    imports: [RouterModule.forChild(routes), IonicModule, FormsModule, CommonModule, ReactiveFormsModule],
+  declarations: [AddEditBillComponent, FilterPopoverComponent, DetailsPopoverComponent, BillDetailsComponent, AppbarLogoComponent],
+  imports: [RouterModule.forChild(routes), IonicModule, FormsModule, CommonModule, ReactiveFormsModule],
   exports: [RouterModule, AppbarLogoComponent],
 })
 export class BillsPageRoutingModule {

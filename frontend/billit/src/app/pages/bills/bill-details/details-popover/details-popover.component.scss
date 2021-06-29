@@ -1,12 +1,7 @@
-.billit-popover-content {
-  padding-right: 1em;
-
-  ion-icon {
-    margin-right: 0.5em;
-    color: var(--ion-icon-color);
-  }
-}
-
 .billit-delete-row {
   color: var(--ion-color-danger);
+
+  ion-icon {
+    color: var(--ion-color-danger);
+  }
 }

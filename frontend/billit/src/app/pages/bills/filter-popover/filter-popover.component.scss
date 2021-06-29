@@ -1,0 +1,39 @@
+ion-item {
+  // override
+  --inner-padding-end: 0.5em;
+  --inner-padding-start: 0.5em;
+}
+
+.billit-action-option {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.billit-action-option-start {
+  display: flex;
+
+  ion-icon {
+    font-size: 1.3em;
+  }
+
+  .billit-action-text {
+    display: flex;
+    align-items: center;
+
+    ion-icon {
+      margin-left: 0.3em;
+      font-size: 1.1em;
+    }
+  }
+
+  .billit-icon-favourites {
+    color: var(--billit-favorite-color);
+  }
+
+  .billit-icon-trusted {
+    color: var(--billit-trusted-color);
+  }
+}

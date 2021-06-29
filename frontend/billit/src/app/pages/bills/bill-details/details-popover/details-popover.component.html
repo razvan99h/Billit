@@ -1,12 +1,13 @@
-<ion-list class="billit-popover-content">
-  <ion-item button
+<ion-list class="billit-action-popover-content">
+  <ion-item button detail="false"
             *ngIf="bill.type !== TRUSTED_TYPE"
             (click)="clickedEdit()">
     <ion-icon name="pencil"></ion-icon>
     Edit bill
   </ion-item>
 
-  <ion-item button lines="none" class="billit-delete-row" (click)="clickedDelete()">
+  <ion-item button detail="false" lines="none" class="billit-delete-row"
+            (click)="clickedDelete()">
     <ion-icon name="trash"></ion-icon>
     Delete bill
   </ion-item>

@@ -1,8 +1,15 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-icon class="billit-header-icon" slot="start" name="search"></ion-icon>
-    <app-appbar-logo></app-appbar-logo>
-    <ion-icon class="billit-header-icon" slot="end" name="filter"></ion-icon>
+  <ion-toolbar *ngIf="searchBarOpen">
+    <ion-searchbar animated showCancelButton="always"
+                   (ionChange)="search($event)"
+                   (ionCancel)="closeSearchBar()"></ion-searchbar>
+  </ion-toolbar>
+  <ion-toolbar color="primary" *ngIf="!searchBarOpen">
+    <ion-icon class="billit-header-icon" slot="start" name="search"
+              (click)="openSearchBar()"></ion-icon>
+    <app-appbar-logo *ngIf="!searchBarOpen"></app-appbar-logo>
+    <ion-icon class="billit-header-icon" slot="end" name="filter"
+              (click)="presentFilterPopover($event)"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
@@ -26,11 +33,22 @@
   </ion-fab>
 
   <div class="billit-content">
-    <h5 class="text-center font-italic mt-4" *ngIf="bills && bills.length === 0">
+
+    <h5 class="text-center font-italic mt-4"
+        *ngIf="billsToShow && billsToShow.length === 0 && !searchBarOpen">
       No bills added yet!
     </h5>
+
+    <div *ngIf="searchBarOpen">
+      <h5 class="text-center p-4" *ngIf="searchText.length <= 1">
+          Search by stores, products, categories or bill number
+      </h5>
+      <h5 class="text-center p-4" *ngIf="billsToShow.length == 0 && searchText.length > 1">
+        No results found!
+      </h5>
+    </div>
     <div class="billit-card-wrapper"
-         *ngFor="let bill of bills; let i = index">
+         *ngFor="let bill of billsToShow; let i = index">
 
       <p *ngIf="i === 0 || (intervalsToShow[i] && intervalsToShow[i] !== intervalsToShow[i - 1])">
         {{intervalsToShow[i]?.name}}

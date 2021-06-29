@@ -1,0 +1,89 @@
+<ion-list class="billit-action-popover-content">
+  <ion-item detail="false">
+    Display bills by:
+  </ion-item>
+
+  <ion-radio-group [value]="currentFilter">
+    <ion-item button detail="false"
+              (click)="clickedOption(filterAction.DATE_DESC)">
+      <div class="billit-action-option">
+        <div class="billit-action-option-start">
+          <ion-icon name="today-outline"></ion-icon>
+          <div class="billit-action-text">
+            Date
+            <ion-icon name="arrow-down-outline"></ion-icon>
+          </div>
+        </div>
+        <ion-radio [value]="filterAction.DATE_DESC"></ion-radio>
+      </div>
+    </ion-item>
+
+    <ion-item button detail="false"
+              (click)="clickedOption(filterAction.DATE_ASC)">
+      <div class="billit-action-option">
+        <div class="billit-action-option-start">
+          <ion-icon name="today-outline"></ion-icon>
+          <div class="billit-action-text">
+            Date
+            <ion-icon name="arrow-up-outline"></ion-icon>
+          </div>
+        </div>
+        <ion-radio [value]="filterAction.DATE_ASC"></ion-radio>
+      </div>
+    </ion-item>
+
+    <ion-item button detail="false"
+              (click)="clickedOption(filterAction.PRICE_DESC)">
+      <div class="billit-action-option">
+        <div class="billit-action-option-start">
+          <ion-icon name="logo-usd"></ion-icon>
+          <div class="billit-action-text">
+            Price
+            <ion-icon name="arrow-down-outline"></ion-icon>
+          </div>
+        </div>
+        <ion-radio [value]="filterAction.PRICE_DESC"></ion-radio>
+      </div>
+    </ion-item>
+
+    <ion-item button detail="false"
+              (click)="clickedOption(filterAction.PRICE_ASC)">
+      <div class="billit-action-option">
+        <div class="billit-action-option-start">
+          <ion-icon name="logo-usd"></ion-icon>
+          <div class="billit-action-text">
+            Price
+            <ion-icon name="arrow-up-outline"></ion-icon>
+          </div>
+        </div>
+        <ion-radio [value]="filterAction.PRICE_ASC"></ion-radio>
+      </div>
+    </ion-item>
+
+    <ion-item button detail="false"
+              (click)="clickedOption(filterAction.FAVOURITES)">
+      <div class="billit-action-option">
+        <div class="billit-action-option-start">
+          <ion-icon name="star" class="billit-icon-favourites"></ion-icon>
+          <div class="billit-action-text">
+            Favourites
+          </div>
+        </div>
+        <ion-radio [value]="filterAction.FAVOURITES"></ion-radio>
+      </div>
+    </ion-item>
+
+    <ion-item button detail="false" lines="none"
+              (click)="clickedOption(filterAction.TRUSTED)">
+      <div class="billit-action-option">
+        <div class="billit-action-option-start">
+          <ion-icon name="checkmark-circle" class="billit-icon-trusted"></ion-icon>
+          <div class="billit-action-text">
+            Trusted
+          </div>
+        </div>
+        <ion-radio [value]="filterAction.TRUSTED"></ion-radio>
+      </div>
+    </ion-item>
+  </ion-radio-group>
+</ion-list>

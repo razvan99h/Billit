@@ -1,6 +1,5 @@
 export const API_URL =  'http://192.168.100.87:3005/api/';
 export const PASSWORD_REGEX = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
-export const CURRENCIES = ['RON', 'EUR', 'USD', 'HUF'];
 
 /* ERROR MESSAGES */
 

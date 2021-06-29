@@ -18,7 +18,6 @@ export class LocalStorageService {
     localStorage.setItem(this.loginPath, JSON.stringify(value));
   }
 
-  clearLoginData() {
-    localStorage.removeItem(this.loginPath);
-  }
+  clearData() {
+    localStorage.removeItem(this.loginPath);  }
 }

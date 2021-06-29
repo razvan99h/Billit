@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../../middleware/jwt.middleware');
 const User = require('../users/user.model');
+const ExchangeRate = require('../exchange.rates/exchange.rate.model');
 
 const BCRYPT_PASSES = 10;
 const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/g;
@@ -32,10 +33,13 @@ module.exports.login = async (request, response) => {
   const result = await bcrypt.compare(password, user.hash);
   if (result) {
     const token = generateToken(user._id.toString());
+    const exchangeRates = await ExchangeRate.find();
+
     response.json({
       jwt: token,
       _id: user._id,
-      currency: user.currency
+      currency: user.currency,
+      exchangeRates
     });
   } else {
     response.status(400);

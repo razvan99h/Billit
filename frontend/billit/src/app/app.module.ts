@@ -13,6 +13,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BillsService } from './shared/services/bills.service';
 import { SharedService } from './shared/services/shared.service';
 import { ChartsModule } from 'ng2-charts';
+import { ExchangeRatesService } from './shared/services/exchange-rates.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { ChartsModule } from 'ng2-charts';
     BillsService,
     SharedService,
     LocalStorageService,
+    ExchangeRatesService,
   ],
   bootstrap: [AppComponent],
 })
