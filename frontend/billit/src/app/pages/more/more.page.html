@@ -1,5 +1,3 @@
-
-
 <ion-content>
   <main class="billit-more-page">
     <div class="billit-logo-container">
@@ -8,11 +6,11 @@
     </div>
 
     <ion-list>
-      <ion-item button>
+      <ion-item button (click)="goToMyAccount()">
         <ion-icon name="person-circle-outline"></ion-icon>
         <ion-label>My account</ion-label>
       </ion-item>
-      <ion-item button>
+      <ion-item button (click)="goToFAQ()">
         <ion-icon name="help"></ion-icon>
         <ion-label>FAQ</ion-label>
       </ion-item>

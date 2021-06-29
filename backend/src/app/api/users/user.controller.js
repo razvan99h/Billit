@@ -1,6 +1,9 @@
 const User = require('./user.model');
 const Bill = require('../bills/bill.model');
 const Product = require('../bills/product.model');
+const bcrypt = require('bcrypt');
+const { BCRYPT_PASSES } = require('../auth/auth.util');
+const { PASSWORD_REGEX } = require('../auth/auth.util');
 
 /**
  * User entity
@@ -45,6 +48,7 @@ module.exports.view = async (request, response) => {
  * @return {object} 404 - User not found
  */
 module.exports.update = async (request, response) => {
+  delete request.body.hash;
   const user = await User.findByIdAndUpdate(request.params.id, request.body, {
     new: true
   }).exec();
@@ -65,5 +69,38 @@ module.exports.remove = async (request, response) => {
   await Product.deleteMany({ bill: { $in: billsToDelete.map((b) => b._id) } });
   await Bill.deleteMany({ owner: request.params.id });
   await User.findByIdAndRemove(request.params.id);
+  response.json(request.params.id);
+};
+
+/**
+ * PATCH /api/users/:id
+ * @summary Change the password of the user identified by id
+ * @security BearerAuth
+ * @param {string} request.params.id - User id
+ * @param {object} request.body Old and new password
+ * @return {string} 200 - Updated user id
+ * @return {object} 400 - Invalid password format
+ * @return {object} 403 - Resource not owned
+ * @return {object} 404 - User not found
+ * @return {object} 405 - Old password incorrect
+ */
+module.exports.changePassword = async (request, response) => {
+  const { oldPassword, newPassword } = request.body;
+
+  if (!newPassword.match(PASSWORD_REGEX)) {
+    response.status(400);
+    response.send('Invalid password format');
+    return;
+  }
+
+  const user = await User.findById(request.params.id);
+  if (!(await bcrypt.compare(oldPassword, user.hash))) {
+    response.status(405);
+    response.send('Old password incorrect');
+    return;
+  }
+
+  const encrypted = await bcrypt.hash(newPassword, BCRYPT_PASSES);
+  await User.findByIdAndUpdate(request.params.id, { hash: encrypted });
   response.json(request.params.id);
 };

@@ -43,7 +43,7 @@ export class BillsPage implements OnInit {
     private toastService: ToastService,
     private barcodeScanner: BarcodeScanner,
     private popoverController: PopoverController,
-    public loadingController: LoadingController,
+    private loadingController: LoadingController,
   ) {
     this.currency = this.localStorageService.loginData.currency;
     this.currentFilter = FilterPopoverAction.DATE_DESC;
@@ -201,13 +201,13 @@ export class BillsPage implements OnInit {
     }
   }
 
-  async presentFilterPopover(ev: any) {
+  async presentFilterPopover(event: any) {
     const popover = await this.popoverController.create({
       component: FilterPopoverComponent,
       componentProps: {currentFilter: this.currentFilter},
-      event: ev,
       cssClass: 'billit-filter-popover',
-      translucent: true
+      translucent: true,
+      event
     });
     await popover.present();
     const {data} = await popover.onDidDismiss();

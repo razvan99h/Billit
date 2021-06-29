@@ -37,3 +37,12 @@
 .billit-filter-popover {
   --max-width: 12em;
 }
+
+.billit-password-alert {
+  --min-width: 80vw;
+
+  .alert-message {
+    // override
+    padding-bottom: 0;
+  }
+}

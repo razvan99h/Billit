@@ -1,0 +1,38 @@
+ion-title {
+  padding: 0;
+}
+
+.billit-account-icon {
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+
+  ion-icon {
+    font-size: 35vw;
+    color: var(--billit-icon-color);
+  }
+}
+
+.billit-account-form {
+  padding: 1em 2em 0.5em 2em;
+
+  ion-item {
+    --ion-background-color: transparent;
+    opacity: 1;
+  }
+
+  .billit-account-form-currency {
+    margin-top: 1em;
+  }
+}
+
+.billit-account-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ion-button {
+    width: 14em;
+    margin-bottom: 1em;
+  }
+}

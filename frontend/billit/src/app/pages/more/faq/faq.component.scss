@@ -1,0 +1,29 @@
+ion-title {
+  padding: 0;
+}
+
+ion-content {
+  --background: var(--ion-color-primary-contrast);
+
+  ion-item {
+    color: var(--billit-icon-color);
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+    --padding-end: 1em;
+    --padding-start: 1em;
+  }
+
+  .billit-faq-question {
+    display: flex;
+
+    ion-icon {
+      margin-right: 0.5em;
+      min-width: 1em;
+    }
+
+    span {
+      padding: 0.5em 0;
+    }
+  }
+}
+

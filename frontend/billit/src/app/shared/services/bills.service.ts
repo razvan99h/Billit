@@ -52,7 +52,7 @@ export class BillsService {
   deleteBill(bill: Bill): Observable<void> {
     console.log('deleteBill <<< bill: ', bill);
     return this.httpClient
-      .delete<Array<Bill>>(this.url + bill._id)
+      .delete(this.url + bill._id)
       .pipe(
         map(response => {
           console.log('deleteBill >>> response:', response);

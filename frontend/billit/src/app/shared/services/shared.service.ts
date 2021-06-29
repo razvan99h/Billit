@@ -9,6 +9,7 @@ import { UpdateBillsAction } from '../models/enums/update-bills.action';
 export class SharedService {
   private sourceBill = new BehaviorSubject<Bill>(null);
   private sourceBillUpdateList = new BehaviorSubject<[Bill, UpdateBillsAction]>(null);
+  private sourceMyAccountEditCall = new BehaviorSubject<boolean>(null);
 
   constructor() {
   }
@@ -27,5 +28,13 @@ export class SharedService {
 
   sendBillInfoUpdateList(info: [Bill, UpdateBillsAction]): void {
     this.sourceBillUpdateList.next(info);
+  }
+
+  getMyAccountEditCall(): Observable<boolean> {
+    return this.sourceMyAccountEditCall.asObservable();
+  }
+
+  sendMyAccountEditCall(isEdit: boolean): void {
+    this.sourceMyAccountEditCall.next(isEdit);
   }
 }

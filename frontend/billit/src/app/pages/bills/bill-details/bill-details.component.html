@@ -1,11 +1,12 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-icon slot="start" class="billit-header-icon"  name="arrow-back" (click)="goBack()"></ion-icon>
+    <ion-icon slot="start" class="billit-header-icon"  name="arrow-back"
+              (click)="goBack()"></ion-icon>
     <ion-icon slot="start" class="billit-header-more"></ion-icon> <!-- here only to achieve header equilibrium-->
     <app-appbar-logo></app-appbar-logo>
     <ion-icon slot="end"
               class="billit-header-icon {{bill.favorite ? 'billit-header-star' : ''}}"
-              name="{{bill.favorite ? 'star' : 'star-outline'}}"
+              [name]="bill.favorite ? 'star' : 'star-outline'"
               (click)="updateFavorite()"></ion-icon>
     <ion-icon slot="end" class="billit-header-more" name="ellipsis-vertical"
               (click)="presentPopover($event)"></ion-icon>

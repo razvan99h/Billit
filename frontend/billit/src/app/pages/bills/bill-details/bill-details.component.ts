@@ -50,13 +50,13 @@ export class BillDetailsComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  async presentPopover(ev: any) {
+  async presentPopover(event: any) {
     const popover = await this.popoverController.create({
       component: DetailsPopoverComponent,
       componentProps: {bill: this.bill},
-      event: ev,
       cssClass: 'billit-details-popover',
-      translucent: true
+      translucent: true,
+      event
     });
     await popover.present();
     const {data} = await popover.onDidDismiss();

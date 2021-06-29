@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar *ngIf="searchBarOpen">
-    <ion-searchbar animated showCancelButton="always"
+  <ion-toolbar color="primary" *ngIf="searchBarOpen">
+    <ion-searchbar color="light" animated showCancelButton="always"
                    (ionChange)="search($event)"
                    (ionCancel)="closeSearchBar()"></ion-searchbar>
   </ion-toolbar>

@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon slot="start" class="billit-header-icon"
+              [name]="isEditMode ? 'close' : 'arrow-back'"
+              (click)="isEditMode ? exitEditMode() : goBack()"></ion-icon>
+    <ion-title>My account</ion-title>
+    <ion-icon slot="end"
+              class="billit-header-icon"
+              [name]="isEditMode ? 'save' : 'pencil'"
+              (click)="isEditMode ? save() : enableEditMode()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section class="billit-account-icon">
+    <ion-icon name="person-circle-outline"></ion-icon>
+  </section>
+
+  <section class="billit-account-form"
+           [formGroup]="form">
+    <ion-item class="input-field" mode="md"
+              [disabled]="!isEditMode">
+      <ion-label position="floating">Name</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+
+    <p class="billit-input-error-message ion-padding-start"
+       *ngIf="showErrors && !form.controls.name.valid">
+      {{ERROR_NAME}}
+    </p>
+
+    <ion-item class="input-field" mode="md"
+              [disabled]="!isEditMode">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+
+    <p class="billit-input-error-message ion-padding-start"
+       *ngIf="showErrors && !form.controls.email.valid">
+      {{ERROR_EMAIL}}
+    </p>
+
+    <ion-item class="input-field" mode="md"
+              [disabled]="!isEditMode">
+      <ion-label position="floating">Country</ion-label>
+      <ion-input type="text" formControlName="country"></ion-input>
+    </ion-item>
+
+    <p class="billit-input-error-message ion-padding-start"
+       *ngIf="showErrors && !form.controls.country.valid">
+      {{ERROR_COUNTRY}}
+    </p>
+
+    <ion-item class="input-field billit-account-form-currency" mode="md"
+              [disabled]="!isEditMode">
+      <ion-label>Displayed currency</ion-label>
+      <ion-select [value]="currencies"
+                  [(ngModel)]="currency"
+                  [ngModelOptions]="{standalone: true}">
+        <ion-select-option *ngFor="let currency of currencies"
+                           [value]="currency">
+          {{currency}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </section>
+
+  <section class="billit-account-buttons">
+    <ion-button shape="round"
+                [disabled]="isEditMode"
+                (click)="changePassword()">
+      Change Password
+    </ion-button>
+    <ion-button shape="round" fill="outline"
+                [disabled]="isEditMode"
+                (click)="deleteAccount()">
+      Delete account
+    </ion-button>
+
+  </section>
+</ion-content>

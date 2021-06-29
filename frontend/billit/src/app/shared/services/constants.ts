@@ -1,4 +1,4 @@
-export const API_URL =  'http://192.168.100.87:3005/api/';
+export const API_URL = 'http://192.168.100.87:3005/api/';
 export const PASSWORD_REGEX = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
 
 /* ERROR MESSAGES */
@@ -24,8 +24,6 @@ export const ERROR_PRODUCT_NAME_LONG = 'Name too long';
 export const ERROR_QUANTITY_INVALID = 'Invalid quantity';
 export const ERROR_QUANTITY_BIG = 'Quantity too big';
 export const ERROR_PRICE_INVALID = 'Invalid price';
-
-
 
 
 

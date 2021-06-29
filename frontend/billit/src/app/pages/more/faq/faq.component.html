@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon slot="start" class="billit-header-icon" name="arrow-back"
+              (click)="goBack()">
+    </ion-icon>
+    <ion-title>Frequently asked questions</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngFor="let question of questions; let i = index">
+    <ion-item class="billit-faq-question" (click)="expand(i)">
+      <ion-icon name="chevron-down" class="inline left"
+                *ngIf="!expanded[i]"></ion-icon>
+      <ion-icon name="chevron-up" class="inline left"
+                *ngIf="expanded[i]"></ion-icon>
+      <span>
+        {{question.question}}
+      </span>
+    </ion-item>
+    <ion-item lines="bottom"
+              *ngIf="expanded[i]">
+      <span class="p-3">
+        {{question.answer}}
+      </span>
+    </ion-item>
+  </div>
+</ion-content>
