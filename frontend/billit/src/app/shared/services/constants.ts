@@ -1,4 +1,4 @@
-export const API_URL = 'http://192.168.100.87:3005/api/';
+export const API_URL = 'http://109.101.65.40:3005/api/';
 export const PASSWORD_REGEX = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
 
 /* ERROR MESSAGES */
